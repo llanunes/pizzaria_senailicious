@@ -14,38 +14,15 @@ import produtoDao from '../model/DAO/produtos.js';
 const novoProduto = async (produto) => {
     
     // validação de campos obrigatórios
-    if (produto.nome == '' || produto.imagem == '' || produto.tamanho == '' || produto.preco == '' || produto.desconto == '' || produto.id_tipo_produto == '' ){
+    if (produto.nome == '' || produto.imagem == '' || produto.tamanho == '' || produto.preco == '' || produto.desconto == null || produto.id_tipo_produto == '' ){
         return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS};
     } else {
-        const novoProduto = produtoDao.insertProduto(produto)
+        const novoProduto = await produtoDao.insertProduto(produto)
         // chama a função para inserir um novo produto
-        const result = novoProduto.insertProduto(produto);
+        const result = novoProduto;
         
         if (result){
             return  { status: 201, message: MESSAGE_SUCESS.INSERT_ITEM };
-        } else {
-            return { status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB };
-        }
-    }
-}
-
-// funcao para atualizar um registro
-const atualizarProduto = (produto) => {
-    // validacao para o id como campo obrigatorio
-        if (produto.id == '' || produto.id == undefined){
-            return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
-        }   
-    // validacao de campos obrigatorios
-    else if (produto.nome == '' || produto.imagem == '' || produto.tamanho == '' || produto.preco == '' || produto.desconto == '' || produto.id_tipo_produto == '' ){
-        return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS};
-    } else {
-        const atualizarProduto = produtoDao.atualizarProduto();
-
-        // chama a função para inserir um novo produto
-        const result = atualizarProduto.updateProduto(produto);
-        
-        if (result){
-            return  { status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM };
         } else {
             return { status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB };
         }
@@ -60,7 +37,7 @@ const deletarProduto = (id) => {
         const produto = buscarProduto(id) 
             if(produto){
                 const deleteProduto = produtoDao.deleteProduto(id)
-                const result = deletarProduto.deleteProduto(id);
+                const result = deleteProduto;
 
                 if (result){
                     return  { status: 201, message: MESSAGE_SUCESS.DELETE_ITEM };
@@ -72,6 +49,29 @@ const deletarProduto = (id) => {
         }
     }    
 }
+
+// funcao para atualizar um registro
+const atualizarProduto = (produto) => {
+    // validacao para o id como campo obrigatorio
+        if (produto.id == '' || produto.id == undefined){
+            return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
+        }   
+    // validacao de campos obrigatorios
+    else if (produto.nome == '' || produto.imagem == '' || produto.tamanho == '' || produto.preco == '' || produto.desconto == null || produto.id_tipo_produto == '' ){
+        return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS};
+    } else {
+
+        const atualizarProduto = produtoDao.updateProduto(produto);
+        const result = atualizarProduto;
+        
+        if (result){
+            return  { status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM };
+        } else {
+            return { status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB };
+        }
+    }
+}
+
 
 // funcao para retornar todos os registros
 const listarProdutos = async () => {
@@ -104,10 +104,12 @@ const buscarProduto = async (id) => {
     }
 }
 
-export default {
+const controllerProduto = {
     listarProdutos,
     novoProduto,
     deletarProduto,
     atualizarProduto,
     buscarProduto
 }
+
+export default controllerProduto;

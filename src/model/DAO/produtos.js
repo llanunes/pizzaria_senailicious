@@ -13,7 +13,6 @@ import { PrismaClient } from "@prisma/client";
 // função para inserir um novo registro do BD
 const insertProduto = async (produto) => {
     try {
-
         // instancia da classe PrismaClient
         const prisma = new PrismaClient();
 
@@ -34,14 +33,17 @@ const insertProduto = async (produto) => {
             '${produto.id_tipo_produto}'
             )`;
 
+            console.log(sql);
         //$executeRawUnsafe permite encaminhar uma variavel contendo o script         
         const result = await prisma.$executeRawUnsafe(sql);
+        console.log("teste", result)
         if (result) {
             return true;
         } else {
             return false;
         }
     } catch (error) {
+        console.log(error)
         return false;
     }
 }
@@ -64,12 +66,14 @@ const updateProduto = async (produto) => {
 
         //$executeRawUnsafe permite encaminhar uma variavel contendo o script         
         const result = await prisma.$executeRawUnsafe(sql);
+
         if (result) {
             return true;
         } else {
             return false;
         }
     } catch (error) {
+        console.log(error)
         return false;
     }
 
