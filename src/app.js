@@ -24,13 +24,14 @@ import express from 'express';
 import cors from 'cors';
 import { MESSAGE_ERROR, MESSAGE_SUCESS } from './modulo/config.js';
 import controllerProduto from './controller/controllerProduto.js';
-// import controllerAdministrador from './controller/controllerAdministrador';
+import controllerIngredientes from './controller/controllerIngredientes.js';
+import controllerAdministrador from './controller/controllerAdministrador';
 
 const app = express();
 
 app.use(express.json(), cors());
 
-// ##########################################  END POINT PARA PRODUTOS ###############################################
+// ###########################################################  END POINT PARA PRODUTOS ########################################################
 
 // EndPoint para listar todos os produtos 
 app.get('/v1/produtos', cors(), async (request, response) => {
@@ -38,7 +39,7 @@ app.get('/v1/produtos', cors(), async (request, response) => {
   let message;
   let statusCode;
   
-  // Retorna todos os alunos existentes do BD
+  // Retorna todos os produtos existentes do BD
   const dadosProduto = await controllerProduto.listarProdutos();
   
   // valida se existe retorno 
@@ -170,14 +171,14 @@ app.get('/v1/produto/:id', cors(), async (request, response) => {
     
     if (id != '' && id != undefined){
         
-        // Retorna todos os alunos existentes do BD
+        // Retorna todos os produtos existentes do BD
         const dadosProduto = await controllerProduto.buscarProduto(id);
         
         // valida se existe retorno 
             if(dadosProduto){
 
                 statusCode = 200;
-                message = dadosAluno;
+                message = dadosProduto;
 
             } else {
                 statusCode = 400;
@@ -191,6 +192,297 @@ app.get('/v1/produto/:id', cors(), async (request, response) => {
     response.status(statusCode);
     response.json(message);
 });
+
+// #################################################### ENDPOINTS PARA INGREDIENTES ###############################################################
+
+// EndPoint para listar todos os ingredientes 
+app.get('/v1/ingredientes', cors(), async (request, response) => {
+
+    let message;
+    let statusCode;
+    
+    // Retorna todos os ingredientes existentes do BD
+    const dadosIngrediente = await controllerIngredientes.listarIngredientes();
+    
+    // valida se existe retorno 
+    if(dadosIngrediente){
+        statusCode = 200;
+        console.log(dadosIngrediente);
+        message = dadosIngrediente;
+    } else {
+        statusCode = 404; 
+        message = MESSAGE_ERROR.NOT_FOUND_BD;
+    }
+    response.status(statusCode);
+    response.json(message);
+  });
+  
+  
+  app.post('/v1/ingrediente', cors(), async (request, response) => {
+    let statusCode;
+    let message;
+    let headerContentType;
+  
+    headerContentType = request.headers['content-type']
+  
+    if (headerContentType == 'application/json'){
+        let dadosBody = request.body
+  
+        if(JSON.stringify (dadosBody) != "{}"){
+  
+            const novoIngrediente = await controllerIngredientes.novoIngrediente(dadosBody);
+  
+           statusCode = novoIngrediente.status;
+           message = novoIngrediente.message;
+  
+        } else {
+            statusCode = 400;
+            message = MESSAGE_ERROR.EMPTY_BODY;
+        }
+        
+    } else {
+        statusCode = 415;
+        message = MESSAGE_ERROR.CONTENT_TYPE;
+    }
+  
+    response.status(statusCode);
+    response.json(message);
+  
+  });
+  
+  // endpoint para atualizar um ingrediente existente
+  app.put('/v1/ingrediente/:id', cors(), async (request, response) => {
+    let statusCode;
+    let message;
+    let headerContentType;
+  
+    headerContentType = request.headers['content-type']
+  
+    if (headerContentType == 'application/json'){
+        let dadosBody = request.body;
+  
+        if(JSON.stringify (dadosBody) != "{}"){
+  
+            let id = request.params.id;
+  
+            if (id != '' && id != undefined){
+  
+                dadosBody.id = id;
+  
+                const novoIngrediente = controllerIngredientes.atualizarIngrediente(dadosBody);
+  
+            statusCode = novoIngrediente.status;
+            message = novoIngrediente.message;
+            } else {
+                statusCode =  400 ;
+                message = MESSAGE_ERROR.REQUIRED_ID
+            }
+        } else {
+            statusCode = 400;
+            message = MESSAGE_ERROR.EMPTY_BODY;
+        }
+        
+    } else {
+        statusCode = 415;
+        message = MESSAGE_ERROR.CONTENT_TYPE;
+    }
+  
+    response.status(statusCode);
+    response.json(message);
+  
+  });
+  
+  app.delete('/v1/ingrediente/:id', cors(), async (request, response) => {
+    let statusCode;
+    let message;
+    let id = request.params.id
+  
+    if (id != '' && id != undefined){
+        
+        const deletarIngrediente = controllerIngredientes.deletarIngrediente(id);
+  
+        statusCode = deletarIngrediente.status;
+        message = deletarIngrediente.message;
+    } else {
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID
+    }
+   response.status(statusCode);
+   response.json(message);
+  });
+  
+  app.get('/v1/ingrediente/:id', cors(), async (request, response) => {
+      let message;
+      let statusCode;
+      let id = request.params.id;
+      
+      if (id != '' && id != undefined){
+          
+          const dadosIngrediente = await controllerIngredientes.buscarIngrediente(id);
+          
+              if(dadosIngrediente){
+  
+                  statusCode = 200;
+                  message = dadosIngrediente;
+  
+              } else {
+                  statusCode = 400;
+                  message = MESSAGE_ERROR.REQUIRED_ID
+              }
+      } else {
+          statusCode = 404; 
+          message = MESSAGE_ERROR.NOT_FOUND_BD;
+      }
+  
+      response.status(statusCode);
+      response.json(message);
+  });
+  
+
+// #################################################### ENDPOINTS PARA ADMINISTRADORES ###############################################################
+
+// EndPoint para listar todos os administradores 
+app.get('/v1/administradores', cors(), async (request, response) => {
+
+    let message;
+    let statusCode;
+    
+    // Retorna todos os administradores existentes do BD
+    const dadosAdministrador = await controllerAdministrador.listarAdministradores();
+    
+    // valida se existe retorno 
+    if(dadosAdministrador){
+        statusCode = 200;
+        message = dadosAdministrador;
+    } else {
+        statusCode = 404; 
+        message = MESSAGE_ERROR.NOT_FOUND_BD;
+    }
+    response.status(statusCode);
+    response.json(message);
+  });
+  
+  
+  app.post('/v1/administrador', cors(), async (request, response) => {
+    let statusCode;
+    let message;
+    let headerContentType;
+  
+    headerContentType = request.headers['content-type']
+  
+    if (headerContentType == 'application/json'){
+        let dadosBody = request.body
+  
+        if(JSON.stringify (dadosBody) != "{}"){
+  
+            const novoAdministrador = await controllerAdministrador.novoAdministrador(dadosBody);
+  
+           statusCode = novoAdministrador.status;
+           message = novoAdministrador.message;
+  
+        } else {
+            statusCode = 400;
+            message = MESSAGE_ERROR.EMPTY_BODY;
+        }
+        
+    } else {
+        statusCode = 415;
+        message = MESSAGE_ERROR.CONTENT_TYPE;
+    }
+  
+    response.status(statusCode);
+    response.json(message);
+  
+  });
+  
+  // endpoint para atualizar um ingrediente existente
+  app.put('/v1/administrador/:id', cors(), async (request, response) => {
+    let statusCode;
+    let message;
+    let headerContentType;
+  
+    headerContentType = request.headers['content-type']
+  
+    if (headerContentType == 'application/json'){
+        let dadosBody = request.body;
+  
+        if(JSON.stringify (dadosBody) != "{}"){
+  
+            let id = request.params.id;
+  
+            if (id != '' && id != undefined){
+  
+                dadosBody.id = id;
+  
+                const novoAdministrador = controllerAdministrador.atualizarAdministrador(dadosBody);
+  
+            statusCode = novoAdministrador.status;
+            message = novoAdministrador.message;
+            } else {
+                statusCode =  400 ;
+                message = MESSAGE_ERROR.REQUIRED_ID
+            }
+        } else {
+            statusCode = 400;
+            message = MESSAGE_ERROR.EMPTY_BODY;
+        }
+        
+    } else {
+        statusCode = 415;
+        message = MESSAGE_ERROR.CONTENT_TYPE;
+    }
+  
+    response.status(statusCode);
+    response.json(message);
+  
+  });
+  
+  app.delete('/v1/ingrediente/:id', cors(), async (request, response) => {
+    let statusCode;
+    let message;
+    let id = request.params.id
+  
+    if (id != '' && id != undefined){
+        
+        const deletarAdministrador = controllerAdministrador.deletarAdministrador(id);
+  
+        statusCode = deletarAdministrador.status;
+        message = deletarAdministrador.message;
+    } else {
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID
+    }
+   response.status(statusCode);
+   response.json(message);
+  });
+  
+  app.get('/v1/administrador/:id', cors(), async (request, response) => {
+      let message;
+      let statusCode;
+      let id = request.params.id;
+      
+      if (id != '' && id != undefined){
+          
+          const dadosAdministrador = await controllerAdministrador.buscarAdministrador(id);
+          
+              if(dadosAdministrador){
+  
+                  statusCode = 200;
+                  message = dadosAdministrador;
+  
+              } else {
+                  statusCode = 400;
+                  message = MESSAGE_ERROR.REQUIRED_ID
+              }
+      } else {
+          statusCode = 404; 
+          message = MESSAGE_ERROR.NOT_FOUND_BD;
+      }
+  
+      response.status(statusCode);
+      response.json(message);
+  });
+  
 
 app.listen(8080, () => {
   console.log('Server listening at port 8080...');
