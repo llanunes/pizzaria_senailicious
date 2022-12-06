@@ -10,15 +10,12 @@
 import { MESSAGE_ERROR, MESSAGE_SUCESS } from '../modulo/config.js';
 import produtoDao from '../model/DAO/produtos.js';
 
-// funcao para gerar um novo produto
 const novoProduto = async (produto) => {
     
-    // validação de campos obrigatórios
     if (produto.nome == '' || produto.imagem == '' || produto.tamanho == '' || produto.preco == '' || produto.desconto == null || produto.id_tipo_produto == '' ){
         return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS};
     } else {
         const novoProduto = await produtoDao.insertProduto(produto)
-        // chama a função para inserir um novo produto
         const result = novoProduto;
         
         if (result){
@@ -29,7 +26,6 @@ const novoProduto = async (produto) => {
     }
 }
 
-// funcao para excluir um registro
 const deletarProduto = (id) => {
     if (id == '' || id == undefined){
         return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
@@ -50,13 +46,10 @@ const deletarProduto = (id) => {
     }    
 }
 
-// funcao para atualizar um registro
 const atualizarProduto = (produto) => {
-    // validacao para o id como campo obrigatorio
         if (produto.id == '' || produto.id == undefined){
             return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
         }   
-    // validacao de campos obrigatorios
     else if (produto.nome == '' || produto.imagem == '' || produto.tamanho == '' || produto.preco == '' || produto.desconto == null || produto.id_tipo_produto == '' ){
         return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS};
     } else {
@@ -73,10 +66,8 @@ const atualizarProduto = (produto) => {
 }
 
 
-// funcao para retornar todos os registros
 const listarProdutos = async () => {
     const produto = await produtoDao.selectAllProdutos()
-    // const produto = await selectAllProdutos();
 
     if(produto){
         return produto;
@@ -85,7 +76,6 @@ const listarProdutos = async () => {
     }
 }
 
-// funcao para retornar um registro baseado no id
 const buscarProduto = async (id) => {
 
     let dadosProdutoJSON = {};
@@ -94,7 +84,6 @@ const buscarProduto = async (id) => {
         return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
     }
     const dadosProduto = await produtoDao.selectByIdProduto(id);
-    // import { selectByIdProduto } from '../model/DAO/produtos.js';
 
     if(dadosProduto){
         dadosProdutoJSON.produto = dadosProduto;

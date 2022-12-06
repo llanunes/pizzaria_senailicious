@@ -1,6 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 
-// função para inserir um novo registro do BD
 const insertAdministrador = async (administrador) => {
     try {
 
@@ -16,8 +15,7 @@ const insertAdministrador = async (administrador) => {
             '${administrador.email}',
             '${administrador.senha}'
             )`;
-
-        //$executeRawUnsafe permite encaminhar uma variavel contendo o script         
+    
         const result = await prisma.$executeRawUnsafe(sql);
         if (result) {
             return true;
@@ -54,15 +52,13 @@ const updateAdministrador = async (administrador) => {
 
 }
 
-// função para deletar um registro no BD
 const deleteAdministrador = async (id) => {
     try {
         const prisma = new PrismaClient();
 
         let sql = `delete from tbl_administrador 
         where id = '${id}'`;
-
-        //$executeRawUnsafe permite encaminhar uma variavel contendo o script         
+     
         const result = await prisma.$executeRawUnsafe(sql);
         if (result) {
             return true;
@@ -74,20 +70,17 @@ const deleteAdministrador = async (id) => {
     }
 }
 
-// função para retornar os registros no BD
 const selectAllAdministradores = async () => {
 
     const prisma = new PrismaClient();
 
-    // recordset = dados vindos de um BD
     const sql = `select cast(id as float) as 
         id, 
         nome, 
         email, 
         senha
     from tbl_administrador order by id desc`;
-
-    // criamos um objeto do tipo recordset para receber os dados do DB aravés do script SQL (select)    
+   
     const rsAdministrador = await prisma.$queryRawUnsafe(sql);
 
     if (rsAdministrador.length > 0) {
@@ -97,7 +90,6 @@ const selectAllAdministradores = async () => {
     }
 }
 
-// funcao para retornar apenas o registro baseado no id
 const selectByIdAdministrador = async (id) => {
 
     const prisma = new PrismaClient();
@@ -108,8 +100,7 @@ const selectByIdAdministrador = async (id) => {
             email, 
             senha,  
         from tbl_administrador where id = ${id}`;
-
-    // objeto do tipo recordset para receber os dados do DB aravés do script  SQL (select)    
+ 
     const rsAdministrador = await prisma.$queryRawUnsafe(sql);
 
     if (rsAdministrador.length > 0) {

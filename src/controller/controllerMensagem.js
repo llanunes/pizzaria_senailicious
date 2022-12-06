@@ -10,14 +10,12 @@
 import { MESSAGE_ERROR, MESSAGE_SUCESS } from '../modulo/config.js';
 import mensagemDao from '../model/DAO/mensagens.js';
 
-// funcao para gerar uma nova mensagem
 const novaMensagem = async (mensagem) => {
     
     if (mensagem.nome == '' || mensagem.email == '' || mensagem.telefone == '' || mensagem.celular == '' || mensagem.mensagem == '' || mensagem.id_tipo_mensagem == '' ){
         return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS};
     } else {
         const novaMensagem = await mensagemDao.insertMensagem(mensagem)
-        // chama a função para inserir uma nova mensagem
         const result = novaMensagem;
         
         if (result){
@@ -28,7 +26,6 @@ const novaMensagem = async (mensagem) => {
     }
 }
 
-// funcao para excluir um registro
 const deletarMensagem = (id) => {
     if (id == '' || id == undefined){
         return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
@@ -49,14 +46,10 @@ const deletarMensagem = (id) => {
     }    
 }
 
-// funcao para atualizar um registro
 const atualizarMensagem = (mensagem) => {
-    // validacao para o id como campo obrigatorio
         if (mensagem.id == '' || mensagem.id == undefined){
             return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
-        }   
-    // validacao de campos obrigatorios
-    else if (mensagem.nome == '' || mensagem.email == '' || mensagem.telefone == '' || mensagem.celular == '' || mensagem.mensagem == '' || mensagem.id_tipo_mensagem == '' ){
+        } else if (mensagem.nome == '' || mensagem.email == '' || mensagem.telefone == '' || mensagem.celular == '' || mensagem.mensagem == '' || mensagem.id_tipo_mensagem == '' ){
         return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS};
     } else {
 
@@ -71,11 +64,8 @@ const atualizarMensagem = (mensagem) => {
     }
 }
 
-
-// funcao para retornar todos os registros
 const listarMensagens = async () => {
     const mensagem = await mensagemDao.selectAllMensagens()
-    // const mensagem = await selectAllMensagens();
 
     if(mensagem){
         return mensagem;
@@ -84,7 +74,6 @@ const listarMensagens = async () => {
     }
 }
 
-// funcao para retornar um registro baseado no id
 const buscarMensagem = async (id) => {
 
     let dadosMensagensJSON = {};

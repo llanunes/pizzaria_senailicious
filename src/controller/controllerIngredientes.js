@@ -10,15 +10,13 @@
 import { MESSAGE_ERROR, MESSAGE_SUCESS } from '../modulo/config.js';
 import ingredienteDao from '../model/DAO/ingredientes.js';
 
-// funcao para gerar um novo produto
 const novoIngrediente = async (ingrediente) => {
     
-    // validação de campos obrigatórios
     if (ingrediente.nome == '' ){
         return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS};
     } else {
         const novoIngrediente = await ingredienteDao.insertIngrediente(ingrediente)
-        // chama a função para inserir um novo produto
+
         const result = novoIngrediente;
         
         if (result){
@@ -29,7 +27,6 @@ const novoIngrediente = async (ingrediente) => {
     }
 }
 
-// funcao para excluir um registro
 const deletarIngrediente = (id) => {
     if (id == '' || id == undefined){
         return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
@@ -50,13 +47,10 @@ const deletarIngrediente = (id) => {
     }    
 }
 
-// funcao para atualizar um registro
 const atualizarIngrediente = (ingrediente) => {
-    // validacao para o id como campo obrigatorio
         if (ingrediente.id == '' || ingrediente.id == undefined){
             return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
         }   
-    // validacao de campos obrigatorios
     else if (ingrediente.nome == ''){
         return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS};
     } else {
@@ -73,10 +67,8 @@ const atualizarIngrediente = (ingrediente) => {
 }
 
 
-// funcao para retornar todos os registros
 const listarIngredientes = async () => {
     const ingrediente = await ingredienteDao.selectAllIngredientes()
-    // const produto = await selectAllProdutos();
 
     if(ingrediente){
         return ingrediente;
@@ -85,7 +77,6 @@ const listarIngredientes = async () => {
     }
 }
 
-// funcao para retornar um registro baseado no id
 const buscarIngrediente = async (id) => {
 
     let dadosIngredienteJSON = {};
@@ -94,7 +85,6 @@ const buscarIngrediente = async (id) => {
         return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
     }
     const dadosIngrediente = await ingredienteDao.selectByIdIngrediente(id);
-    // import { selectByIdProduto } from '../model/DAO/produtos.js';
 
     if(dadosIngrediente){
         dadosIngredienteJSON.ingrediente = dadosIngrediente;

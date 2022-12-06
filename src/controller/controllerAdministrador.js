@@ -1,17 +1,15 @@
-// teste
 
 import { MESSAGE_ERROR, MESSAGE_SUCESS } from '../modulo/config.js';
 import administradorDao from '../model/DAO/administradores.js';
 
-// funcao para gerar um novo registro no banco de dados
+
 const novoAdministrador = async (administrador) => {
     
-    // validação de campos obrigatórios
     if (administrador.nome == '' || administrador.email == '' || administrador.senha == ''){
         return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS};
     } else {
         const novoAdministrador = administradorDao.insertAdministrador(administrador)
-        // chama a função para inserir um novo administrador
+
         const result = novoAdministrador.insertAdministrador(administrador);
         
         if (result){
@@ -22,13 +20,11 @@ const novoAdministrador = async (administrador) => {
     }
 }
 
-// funcao para atualizar um registro
+
 const atualizarAdministrador = (administrador) => {
-    // validacao para o id como campo obrigatorio
         if (administrador.id == '' || administrador.id == undefined){
             return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
         }   
-    // validacao de campos obrigatorios
     else if (administrador.nome == '' || administrador.email == '' || administrador.senha == ''){
         return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS};
     } else if (!administrador.email.includes('@')){
@@ -46,7 +42,6 @@ const atualizarAdministrador = (administrador) => {
     }
 }
 
-// funcao para excluir um registro
 const deletarAdministrador = (id) => {
     if (id == '' || id == undefined){
         return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
@@ -67,7 +62,6 @@ const deletarAdministrador = (id) => {
     }    
 }
 
-// funcao para retornar todos os registros
 const listarAdministradores = async () => {
     const administrador = await administradorDao.selectAllAdministradores()
 
@@ -78,7 +72,6 @@ const listarAdministradores = async () => {
     }
 }
 
-// funcao para retornar um registro baseado no id
 const buscarAdministrador = async (id) => {
 
     let dadosAdministradorJSON = {};
