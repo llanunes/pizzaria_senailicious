@@ -1,6 +1,6 @@
 /**************************************************************************************************** 
 * Objetivo: Arquivo responsável pela manipulação de dados com o BD (insert, update, delet e select)
-* Autor: Larissa Nunes
+* Autor: Larissa Nunes e Matheus Alves
 * Versão: 1.0
 * Data criação: 06/10/2022
 * Data modificação: 01/12/2022
@@ -11,22 +11,29 @@
 import { PrismaClient } from "@prisma/client";
 
 // função para inserir um novo registro do BD
-const insertIngrediente = async (ingrediente) => {
+const insertMensagem = async (mensagem) => {
     try {
         // instancia da classe PrismaClient
         const prisma = new PrismaClient();
 
-        let sql = `insert into tbl_ingrediente (
-            nome
-        )
-        values (
-            '${ingrediente.nome}'
+        let sql = `insert into tbl_mensagem (
+                nome,
+                email,
+                telefone,
+                celular,
+                mensagem,
+                id_tipo_mensagem
+        ) values (
+            '${mensagem.nome}',
+            '${mensagem.email}',
+            '${mensagem.telefone}',
+            '${mensagem.celular}',
+            '${mensagem.mensagem}',
+            '${mensagem.id_tipo_mensagem}'
             )`;
-
-            console.log(sql);
+            // console.log(sql);
         //$executeRawUnsafe permite encaminhar uma variavel contendo o script         
         const result = await prisma.$executeRawUnsafe(sql);
-        // console.log("teste", result)
         if (result) {
             return true;
         } else {
@@ -39,16 +46,21 @@ const insertIngrediente = async (ingrediente) => {
 }
 
 // função para atualizar um registro no BD
-const updateIngrediente = async (ingrediente) => {
+const updateMensagem = async (mensagem) => {
     try {
 
         // instancia da classe PrismaClient
         const prisma = new PrismaClient();
 
-        let sql = `update tbl_ingrediente set
-         nome = '${ingrediente.nome}',
+        let sql = `update tbl_mensagem set
+            nome = '${mensagem.nome}',
+            email = '${mensagem.email}',
+            telefone = '${mensagem.telefone}', 
+            celular = '${mensagem.celular}', 
+            mensagem = '${mensagem.mensagem}',
+            id_tipo_mensagem = '${mensagem.id_tipo_mensagem}'
          
-         where id = '${ingrediente.id}'`
+         where id = '${mensagem.id}'`
 
         //$executeRawUnsafe permite encaminhar uma variavel contendo o script         
         const result = await prisma.$executeRawUnsafe(sql);
@@ -59,17 +71,18 @@ const updateIngrediente = async (ingrediente) => {
             return false;
         }
     } catch (error) {
+        // console.log(error)
         return false;
     }
 
 }
 
 // função para deletar um registro no BD
-const deleteIngrediente = async (id) => {
+const deleteMensagem = async (id) => {
     try {
         const prisma = new PrismaClient();
 
-        let sql = `delete from tbl_ingrediente 
+        let sql = `delete from tbl_mensagem 
         where id = '${id}'`;
 
         //$executeRawUnsafe permite encaminhar uma variavel contendo o script         
@@ -85,50 +98,58 @@ const deleteIngrediente = async (id) => {
 }
 
 // função para retornar os registros no BD
-const selectAllIngredientes = async () => {
+const selectAllMensagens = async () => {
 
     const prisma = new PrismaClient();
 
     // recordset = dados vindos de um BD
     const sql = `select cast(id as float) as 
-            id, 
-            nome
-    from tbl_ingrediente order by id desc`;
-   
-    // criamos um objeto do tipo recordset para receber os dados do DB aravés do script  SQL (select)    
-    const rsIngredientes = await prisma.$queryRawUnsafe(sql);
+            nome,
+            email,
+            telefone,
+            celular,
+            mensagem,
+            id_tipo_mensagem
+    from tbl_mensagem order by id desc`;
 
-    if (rsIngredientes.length > 0) {
-        return rsIngredientes;
+    // criamos um objeto do tipo recordset para receber os dados do DB aravés do script  SQL (select)    
+    const rsMensagem = await prisma.$queryRawUnsafe(sql);
+
+    if (rsMensagem.length > 0) {
+        return rsMensagem;
     } else {
         return false;
     }
 }
 
 // funcao para retornar apenas o registro baseado no id
-const selectByIdIngrediente = async (id) => {
+const selectByIdMensagem = async (id) => {
 
     const prisma = new PrismaClient();
 
     let sql = `select cast(id as float) as 
-            id, 
-            nome 
-        from tbl_ingrediente where id = ${id}`;
+            nome,
+            email,
+            telefone,
+            celular,
+            mensagem,
+            id_tipo_mensagem
+    from tbl_mensagem where id = ${id}`;
 
     // objeto do tipo recordset para receber os dados do DB aravés do script  SQL (select)    
-    const rsIngredientes = await prisma.$queryRawUnsafe(sql);
+    const rsMensagem = await prisma.$queryRawUnsafe(sql);
 
-    if (rsIngredientes.length > 0) {
-        return rsIngredientes.length;
+    if (rsMensagem.length > 0) {
+        return rsMensagem.length;
     } else {
         return false;
     }
 }
 
 export default {
-    updateIngrediente,
-    deleteIngrediente,
-    selectAllIngredientes,
-    insertIngrediente,
-    selectByIdIngrediente
+    updateMensagem,
+    deleteMensagem,
+    selectAllMensagens,
+    insertMensagem,
+    selectByIdMensagem
 }

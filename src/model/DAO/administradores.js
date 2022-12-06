@@ -7,9 +7,9 @@ const insertAdministrador = async (administrador) => {
         const prisma = new PrismaClient();
 
         let sql = `insert into tbl_administrador (
-        nome,
-        email,
-        senha
+            nome,
+            email,
+            senha
         )
         values (
             '${administrador.nome}',
@@ -36,9 +36,9 @@ const updateAdministrador = async (administrador) => {
         const prisma = new PrismaClient();
 
         let sql = `update tbl_administrador set
-         nome = '${administrador.nome}',
-         email = '${administrador.imagem}',
-         senha = '${administrador.tamanho}'
+            nome = '${administrador.nome}',
+            email = '${administrador.imagem}',
+            senha = '${administrador.tamanho}'
          
          where id = '${administrador.id}'`
 
@@ -81,10 +81,10 @@ const selectAllAdministradores = async () => {
 
     // recordset = dados vindos de um BD
     const sql = `select cast(id as float) as 
-    id, 
-    nome, 
-    email, 
-    senha, 
+        id, 
+        nome, 
+        email, 
+        senha
     from tbl_administrador order by id desc`;
 
     // criamos um objeto do tipo recordset para receber os dados do DB aravés do script SQL (select)    
@@ -103,12 +103,11 @@ const selectByIdAdministrador = async (id) => {
     const prisma = new PrismaClient();
 
     let sql = `select cast(id as float) as 
-        id, 
-        nome, 
-        email, 
-        senha,  
-        from tbl_administrador
-        where id = ${id}`;
+            id, 
+            nome, 
+            email, 
+            senha,  
+        from tbl_administrador where id = ${id}`;
 
     // objeto do tipo recordset para receber os dados do DB aravés do script  SQL (select)    
     const rsAdministrador = await prisma.$queryRawUnsafe(sql);

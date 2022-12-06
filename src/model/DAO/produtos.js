@@ -1,6 +1,6 @@
 /**************************************************************************************************** 
 * Objetivo: Arquivo responsável pela manipulação de dados com o BD (insert, update, delet e select)
-* Autor: Larissa Nunes
+* Autor: Larissa Nunes e Matheus Alves
 * Versão: 1.0
 * Data criação: 06/10/2022
 * Data modificação: 01/12/2022
@@ -137,9 +137,8 @@ const selectByIdProduto = async (id) => {
         tamanho, 
         preco, 
         desconto, 
-        id_tipo_produto, 
-        from tbl_produto
-        where id = ${id}`;
+        id_tipo_produto 
+    from tbl_produto where id = ${id}`;
 
     // objeto do tipo recordset para receber os dados do DB aravés do script  SQL (select)    
     const rsProdutos = await prisma.$queryRawUnsafe(sql);

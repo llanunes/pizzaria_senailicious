@@ -25,7 +25,8 @@ import cors from 'cors';
 import { MESSAGE_ERROR, MESSAGE_SUCESS } from './modulo/config.js';
 import controllerProduto from './controller/controllerProduto.js';
 import controllerIngredientes from './controller/controllerIngredientes.js';
-import controllerAdministrador from './controller/controllerAdministrador';
+import controllerAdministrador from './controller/controllerAdministrador.js';
+import controllerMensagem from './controller/controllerMensagem.js';
 
 const app = express();
 
@@ -164,6 +165,7 @@ app.delete('/v1/produto/:id', cors(), async (request, response) => {
  response.json(message);
 });
 
+// anpoint para buscar um produto através do id
 app.get('/v1/produto/:id', cors(), async (request, response) => {
     let message;
     let statusCode;
@@ -207,7 +209,6 @@ app.get('/v1/ingredientes', cors(), async (request, response) => {
     // valida se existe retorno 
     if(dadosIngrediente){
         statusCode = 200;
-        console.log(dadosIngrediente);
         message = dadosIngrediente;
     } else {
         statusCode = 404; 
@@ -311,6 +312,7 @@ app.get('/v1/ingredientes', cors(), async (request, response) => {
    response.json(message);
   });
   
+  // buscar ingrediente pelo id
   app.get('/v1/ingrediente/:id', cors(), async (request, response) => {
       let message;
       let statusCode;
@@ -395,7 +397,7 @@ app.get('/v1/administradores', cors(), async (request, response) => {
   
   });
   
-  // endpoint para atualizar um ingrediente existente
+  // endpoint para atualizar um administrador existente
   app.put('/v1/administrador/:id', cors(), async (request, response) => {
     let statusCode;
     let message;
@@ -437,7 +439,7 @@ app.get('/v1/administradores', cors(), async (request, response) => {
   
   });
   
-  app.delete('/v1/ingrediente/:id', cors(), async (request, response) => {
+  app.delete('/v1/admministrador/:id', cors(), async (request, response) => {
     let statusCode;
     let message;
     let id = request.params.id
@@ -482,7 +484,175 @@ app.get('/v1/administradores', cors(), async (request, response) => {
       response.status(statusCode);
       response.json(message);
   });
+
+  // ANDPOINT PARA AUTENTICAÇÃO
+  // usuario e senha - n fazer get, fazer post
   
+
+// ###########################################################  END POINT PARA MENSAGENS ########################################################
+
+// EndPoint para listar todas as mensagens
+app.get('/v1/mensagens', cors(), async (request, response) => {
+
+    let message;
+    let statusCode;
+    
+    // Retorna todos os produtos existentes do BD
+    const dadosMensagens = await controllerMensagem.listarMensagens();
+    
+    // valida se existe retorno 
+    if(dadosMensagens){
+        statusCode = 200;
+        message = dadosMensagens;
+    } else {
+        statusCode = 404; 
+        message = MESSAGE_ERROR.NOT_FOUND_BD;
+    }
+  
+    response.status(statusCode);
+    response.json(message);
+  });
+  
+  // andpoint para inserir uma nova mensagem
+  app.post('/v1/mensagem', cors(), async (request, response) => {
+    let statusCode;
+    let message;
+    let headerContentType;
+  
+    // recebe o tipo de content type que foi enviado no header da requisição
+    // application/json
+    headerContentType = request.headers['content-type']
+  
+        // validar se o content-type é do tipo json
+    if (headerContentType == 'application/json'){
+        let dadosBody = request.body
+  
+        // Realiza um processo de conversão de dados para conseguir comparar o json vazio
+        if(JSON.stringify (dadosBody) != "{}"){
+  
+            // chama a função novoProduto da controller e encaminha os dados do body
+            const novaMensagem = await controllerMensagem.novaMensagem(dadosBody);
+  
+           statusCode = novaMensagem.status;
+           message = novaMensagem.message;
+  
+        } else {
+            statusCode = 400;
+            message = MESSAGE_ERROR.EMPTY_BODY;
+        }
+        
+    } else {
+        statusCode = 415;
+        message = MESSAGE_ERROR.CONTENT_TYPE;
+    }
+  
+    response.status(statusCode);
+    response.json(message);
+  
+  });
+  
+  // endpoint para atualizar uma mensagem existente
+  app.put('/v1/mensagem/:id', cors(), async (request, response) => {
+    let statusCode;
+    let message;
+    let headerContentType;
+  
+    // recebe o tipo de content type que foi enviado no header da requisição
+    // application/json
+    headerContentType = request.headers['content-type']
+  
+        // validar se o content-type é do tipo json
+    if (headerContentType == 'application/json'){
+        let dadosBody = request.body;
+  
+        // Realiza um processo de conversão de dados para conseguir comparar o json vazio
+        if(JSON.stringify (dadosBody) != "{}"){
+  
+            // recebe id enviado por parametro na requisição
+            let id = request.params.id;
+  
+            // validacao do ID na requisição 
+            if (id != '' && id != undefined){
+  
+                // adiciona o id no JSON que chegou no corpo da requisição
+                dadosBody.id = id;
+  
+                // chama a função novoAluno da controller e encaminha os dados do body
+                const novaMensagem = controllerMensagem.atualizarMensagem(dadosBody);
+  
+            statusCode = novaMensagem.status;
+            message = novaMensagem.message;
+            } else {
+                statusCode =  400 ;
+                message = MESSAGE_ERROR.REQUIRED_ID
+            }
+        } else {
+            statusCode = 400;
+            message = MESSAGE_ERROR.EMPTY_BODY;
+        }
+        
+    } else {
+        statusCode = 415;
+        message = MESSAGE_ERROR.CONTENT_TYPE;
+    }
+  
+    response.status(statusCode);
+    response.json(message);
+  
+  });
+  
+  // andpoint para deletar uma mensagem
+  app.delete('/v1/mensagem/:id', cors(), async (request, response) => {
+    let statusCode;
+    let message;
+    let id = request.params.id
+  
+    if (id != '' && id != undefined){
+        
+        // chama a função para excluir um item
+        const deletarMensagem = controllerMensagem.deletarMensagem(id);
+  
+        statusCode = deletarMensagem.status;
+        message = deletarMensagem.message;
+    } else {
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID
+    }
+   response.status(statusCode);
+   response.json(message);
+  });
+  
+  // anpoint para buscar um produto através do id
+  app.get('/v1/mensagem/:id', cors(), async (request, response) => {
+      let message;
+      let statusCode;
+      let id = request.params.id;
+      
+      if (id != '' && id != undefined){
+          
+          // Retorna todos os produtos existentes do BD
+          const dadosMensagens = await controllerMensagem.buscarMensagem(id);
+          
+          // valida se existe retorno 
+              if(dadosMensagens){
+  
+                  statusCode = 200;
+                  message = dadosMensagens;
+  
+              } else {
+                  statusCode = 400;
+                  message = MESSAGE_ERROR.REQUIRED_ID
+              }
+      } else {
+          statusCode = 404; 
+          message = MESSAGE_ERROR.NOT_FOUND_BD;
+      }
+  
+      response.status(statusCode);
+      response.json(message);
+  });
+  
+
 
 app.listen(8080, () => {
   console.log('Server listening at port 8080...');
