@@ -1,1 +1,1 @@
-# pizzaria_senailicious
+Projeto Pizzaria Senailicious
