@@ -28,12 +28,14 @@ const insertAdministrador = async (administrador) => {
     const sql = `insert into tbl_administrador (
             nome,
             email,
-            senha
+            senha,
+            foto
         )
         values (
             '${administrador.nome}',
             '${administrador.email}',
-            '${administrador.senha}'
+            '${administrador.senha}',
+            '${administrador.foto}'
             )`;
 
     const result = await prisma.$executeRawUnsafe(sql);
