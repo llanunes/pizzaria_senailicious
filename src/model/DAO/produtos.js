@@ -21,7 +21,7 @@
  *
  */
 
-import { prisma } from "../utils/prisma-instance.js";
+import { prisma } from '../utils/prisma-instance.js';
 
 const insertProduto = async (produto) => {
   try {
@@ -77,7 +77,6 @@ const updateProduto = async (produto) => {
 
 const deleteProduto = async (id) => {
   try {
-
     const sql = `delete from tbl_produto 
         where id = '${id}'`;
 
@@ -92,7 +91,6 @@ const deleteProduto = async (id) => {
 };
 
 const selectAllProdutos = async () => {
-
   const sql = `select cast(id as float) as 
         id, 
         nome, 
@@ -112,7 +110,6 @@ const selectAllProdutos = async () => {
 };
 
 const selectByIdProduto = async (id) => {
-
   const sql = `select cast(id as float) as 
         id, 
         nome, 

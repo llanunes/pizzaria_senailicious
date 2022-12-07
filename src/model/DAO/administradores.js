@@ -21,11 +21,10 @@
  *
  */
 
-import { prisma } from "../utils/prisma-instance.js";
+import { prisma } from '../utils/prisma-instance.js';
 
 const insertAdministrador = async (administrador) => {
   try {
-
     const sql = `insert into tbl_administrador (
             nome,
             email,
@@ -49,11 +48,11 @@ const insertAdministrador = async (administrador) => {
 
 const updateAdministrador = async (administrador) => {
   try {
-
     const sql = `update tbl_administrador set
             nome = '${administrador.nome}',
             email = '${administrador.imagem}',
-            senha = '${administrador.tamanho}'
+            senha = '${administrador.senha}',
+            foto = '${administrador.foto}'
          
          where id = '${administrador.id}'`;
 
@@ -69,7 +68,6 @@ const updateAdministrador = async (administrador) => {
 
 const deleteAdministrador = async (id) => {
   try {
-
     const sql = `delete from tbl_administrador 
         where id = '${id}'`;
 
@@ -84,12 +82,12 @@ const deleteAdministrador = async (id) => {
 };
 
 const selectAllAdministradores = async () => {
-
   const sql = `select cast(id as float) as 
         id, 
         nome, 
         email, 
-        senha
+        senha,
+        foto
     from tbl_administrador order by id desc`;
 
   const rsAdministrador = await prisma.$queryRawUnsafe(sql);
@@ -101,12 +99,12 @@ const selectAllAdministradores = async () => {
 };
 
 const selectByIdAdministrador = async (id) => {
-
   const sql = `select cast(id as float) as 
             id, 
             nome, 
             email, 
-            senha,  
+            senha,
+            foto 
         from tbl_administrador where id = ${id}`;
 
   const rsAdministrador = await prisma.$queryRawUnsafe(sql);
