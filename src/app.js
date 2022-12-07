@@ -53,6 +53,30 @@ app.get('/v1/produtos', cors(), async (request, response) => {
   response.json(message);
 });
 
+app.get('/v1/produto/:id', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const dadosProduto = await controllerProduto.buscarProduto(id);
+
+    if (dadosProduto) {
+      statusCode = 200;
+      message = dadosProduto;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.REQUIRED_ID;
+    }
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.NOT_FOUND_BD;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
 app.post('/v1/produto', cors(), async (request, response) => {
   let statusCode;
   let message;
@@ -132,30 +156,6 @@ app.delete('/v1/produto/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.get('/v1/produto/:id', cors(), async (request, response) => {
-  let message;
-  let statusCode;
-  const { id } = request.params;
-
-  if (id !== '' && id !== undefined) {
-    const dadosProduto = await controllerProduto.buscarProduto(id);
-
-    if (dadosProduto) {
-      statusCode = 200;
-      message = dadosProduto;
-    } else {
-      statusCode = 400;
-      message = MESSAGE_ERROR.REQUIRED_ID;
-    }
-  } else {
-    statusCode = 404;
-    message = MESSAGE_ERROR.NOT_FOUND_BD;
-  }
-
-  response.status(statusCode);
-  response.json(message);
-});
-
 // ########################## ENDPOINTS PARA INGREDIENTES ##########################
 
 app.get('/v1/ingredientes', cors(), async (request, response) => {
@@ -171,6 +171,30 @@ app.get('/v1/ingredientes', cors(), async (request, response) => {
     statusCode = 404;
     message = MESSAGE_ERROR.NOT_FOUND_BD;
   }
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.get('/v1/ingrediente/:id', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const dadosIngrediente = await controllerIngredientes.buscarIngrediente(id);
+
+    if (dadosIngrediente) {
+      statusCode = 200;
+      message = dadosIngrediente;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.REQUIRED_ID;
+    }
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.NOT_FOUND_BD;
+  }
+
   response.status(statusCode);
   response.json(message);
 });
@@ -254,33 +278,8 @@ app.delete('/v1/ingrediente/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.get('/v1/ingrediente/:id', cors(), async (request, response) => {
-  let message;
-  let statusCode;
-  const { id } = request.params;
-
-  if (id !== '' && id !== undefined) {
-    const dadosIngrediente = await controllerIngredientes.buscarIngrediente(id);
-
-    if (dadosIngrediente) {
-      statusCode = 200;
-      message = dadosIngrediente;
-    } else {
-      statusCode = 400;
-      message = MESSAGE_ERROR.REQUIRED_ID;
-    }
-  } else {
-    statusCode = 404;
-    message = MESSAGE_ERROR.NOT_FOUND_BD;
-  }
-
-  response.status(statusCode);
-  response.json(message);
-});
-
 // ########################## ENDPOINTS PARA ADMINISTRADORES ##########################
 
-// EndPoint para listar todos os administradores
 app.get('/v1/administradores', cors(), async (request, response) => {
   let message;
   let statusCode;
@@ -296,6 +295,30 @@ app.get('/v1/administradores', cors(), async (request, response) => {
     statusCode = 404;
     message = MESSAGE_ERROR.NOT_FOUND_BD;
   }
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.get('/v1/administrador/:id', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const dadosAdministrador = await controllerAdministrador.buscarAdministrador(id);
+
+    if (dadosAdministrador) {
+      statusCode = 200;
+      message = dadosAdministrador;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.REQUIRED_ID;
+    }
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.NOT_FOUND_BD;
+  }
+
   response.status(statusCode);
   response.json(message);
 });
@@ -326,7 +349,6 @@ app.post('/v1/administrador', cors(), async (request, response) => {
   response.json(message);
 });
 
-// endpoint para atualizar um administrador existente
 app.put('/v1/administrador/:id', cors(), async (request, response) => {
   let statusCode;
   let message;
@@ -380,30 +402,6 @@ app.delete('/v1/admministrador/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.get('/v1/administrador/:id', cors(), async (request, response) => {
-  let message;
-  let statusCode;
-  const { id } = request.params;
-
-  if (id !== '' && id !== undefined) {
-    const dadosAdministrador = await controllerAdministrador.buscarAdministrador(id);
-
-    if (dadosAdministrador) {
-      statusCode = 200;
-      message = dadosAdministrador;
-    } else {
-      statusCode = 400;
-      message = MESSAGE_ERROR.REQUIRED_ID;
-    }
-  } else {
-    statusCode = 404;
-    message = MESSAGE_ERROR.NOT_FOUND_BD;
-  }
-
-  response.status(statusCode);
-  response.json(message);
-});
-
 // ANDPOINT PARA AUTENTICAÇÃO
 // usuario e senha - n fazer get, fazer post
 
@@ -418,6 +416,30 @@ app.get('/v1/mensagens', cors(), async (request, response) => {
   if (dadosMensagens) {
     statusCode = 200;
     message = dadosMensagens;
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.NOT_FOUND_BD;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.get('/v1/mensagem/:id', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const dadosMensagens = await controllerMensagem.buscarMensagem(id);
+
+    if (dadosMensagens) {
+      statusCode = 200;
+      message = dadosMensagens;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.REQUIRED_ID;
+    }
   } else {
     statusCode = 404;
     message = MESSAGE_ERROR.NOT_FOUND_BD;
@@ -502,30 +524,6 @@ app.delete('/v1/mensagem/:id', cors(), async (request, response) => {
     statusCode = 400;
     message = MESSAGE_ERROR.REQUIRED_ID;
   }
-  response.status(statusCode);
-  response.json(message);
-});
-
-app.get('/v1/mensagem/:id', cors(), async (request, response) => {
-  let message;
-  let statusCode;
-  const { id } = request.params;
-
-  if (id !== '' && id !== undefined) {
-    const dadosMensagens = await controllerMensagem.buscarMensagem(id);
-
-    if (dadosMensagens) {
-      statusCode = 200;
-      message = dadosMensagens;
-    } else {
-      statusCode = 400;
-      message = MESSAGE_ERROR.REQUIRED_ID;
-    }
-  } else {
-    statusCode = 404;
-    message = MESSAGE_ERROR.NOT_FOUND_BD;
-  }
-
   response.status(statusCode);
   response.json(message);
 });
