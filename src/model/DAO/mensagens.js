@@ -1,18 +1,18 @@
-/**************************************************************************************************** 
+/** ************************************************************************************************
 * Objetivo: Arquivo responsável pela manipulação de dados com o BD (insert, update, delet e select)
 * Autor: Larissa Nunes e Matheus Alves
 * Versão: 1.0
 * Data criação: 06/10/2022
 * Data modificação: 01/12/2022
-****************************************************************************************************/
+************************************************************************************************* */
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
 const insertMensagem = async (mensagem) => {
-    try {
-        const prisma = new PrismaClient();
+  try {
+    const prisma = new PrismaClient();
 
-        let sql = `insert into tbl_mensagem (
+    const sql = `insert into tbl_mensagem (
                 nome,
                 email,
                 telefone,
@@ -26,24 +26,22 @@ const insertMensagem = async (mensagem) => {
             '${mensagem.celular}',
             '${mensagem.mensagem}',
             '${mensagem.id_tipo_mensagem}'
-            )`;      
-        const result = await prisma.$executeRawUnsafe(sql);
-        if (result) {
-            return true;
-        } else {
-            return false;
-        }
-    } catch (error) {
-        return false;
+            )`;
+    const result = await prisma.$executeRawUnsafe(sql);
+    if (result) {
+      return true;
     }
-}
+    return false;
+  } catch (error) {
+    return false;
+  }
+};
 
 const updateMensagem = async (mensagem) => {
-    try {
+  try {
+    const prisma = new PrismaClient();
 
-        const prisma = new PrismaClient();
-
-        let sql = `update tbl_mensagem set
+    const sql = `update tbl_mensagem set
             nome = '${mensagem.nome}',
             email = '${mensagem.email}',
             telefone = '${mensagem.telefone}', 
@@ -51,44 +49,40 @@ const updateMensagem = async (mensagem) => {
             mensagem = '${mensagem.mensagem}',
             id_tipo_mensagem = '${mensagem.id_tipo_mensagem}'
          
-         where id = '${mensagem.id}'`
-       
-        const result = await prisma.$executeRawUnsafe(sql);
+         where id = '${mensagem.id}'`;
 
-        if (result) {
-            return true;
-        } else {
-            return false;
-        }
-    } catch (error) {
-        return false;
+    const result = await prisma.$executeRawUnsafe(sql);
+
+    if (result) {
+      return true;
     }
-
-}
+    return false;
+  } catch (error) {
+    return false;
+  }
+};
 
 const deleteMensagem = async (id) => {
-    try {
-        const prisma = new PrismaClient();
-
-        let sql = `delete from tbl_mensagem 
-        where id = '${id}'`;
-       
-        const result = await prisma.$executeRawUnsafe(sql);
-        if (result) {
-            return true;
-        } else {
-            return false;
-        }
-    } catch (error) {
-        return false;
-    }
-}
-
-const selectAllMensagens = async () => {
-
+  try {
     const prisma = new PrismaClient();
 
-    const sql = `select cast(id as float) as 
+    const sql = `delete from tbl_mensagem 
+        where id = '${id}'`;
+
+    const result = await prisma.$executeRawUnsafe(sql);
+    if (result) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+};
+
+const selectAllMensagens = async () => {
+  const prisma = new PrismaClient();
+
+  const sql = `select cast(id as float) as 
             nome,
             email,
             telefone,
@@ -96,21 +90,19 @@ const selectAllMensagens = async () => {
             mensagem,
             id_tipo_mensagem
     from tbl_mensagem order by id desc`;
-  
-    const rsMensagem = await prisma.$queryRawUnsafe(sql);
 
-    if (rsMensagem.length > 0) {
-        return rsMensagem;
-    } else {
-        return false;
-    }
-}
+  const rsMensagem = await prisma.$queryRawUnsafe(sql);
+
+  if (rsMensagem.length > 0) {
+    return rsMensagem;
+  }
+  return false;
+};
 
 const selectByIdMensagem = async (id) => {
+  const prisma = new PrismaClient();
 
-    const prisma = new PrismaClient();
-
-    let sql = `select cast(id as float) as 
+  const sql = `select cast(id as float) as 
             nome,
             email,
             telefone,
@@ -118,20 +110,19 @@ const selectByIdMensagem = async (id) => {
             mensagem,
             id_tipo_mensagem
     from tbl_mensagem where id = ${id}`;
- 
-    const rsMensagem = await prisma.$queryRawUnsafe(sql);
 
-    if (rsMensagem.length > 0) {
-        return rsMensagem.length;
-    } else {
-        return false;
-    }
-}
+  const rsMensagem = await prisma.$queryRawUnsafe(sql);
+
+  if (rsMensagem.length > 0) {
+    return rsMensagem.length;
+  }
+  return false;
+};
 
 export default {
-    updateMensagem,
-    deleteMensagem,
-    selectAllMensagens,
-    insertMensagem,
-    selectByIdMensagem
-}
+  updateMensagem,
+  deleteMensagem,
+  selectAllMensagens,
+  insertMensagem,
+  selectByIdMensagem,
+};
