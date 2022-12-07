@@ -23,7 +23,7 @@
 
 import express from 'express';
 import cors from 'cors';
-import { MESSAGE_ERROR } from './modulo/config.js';
+import { MESSAGE_ERROR } from './module/config.js';
 import controllerProduto from './controller/controllerProduto.js';
 import controllerIngredientes from './controller/controllerIngredientes.js';
 import controllerAdministrador from './controller/controllerAdministrador.js';
@@ -33,7 +33,7 @@ const app = express();
 
 app.use(express.json(), cors());
 
-// ##########################  END POINT PARA PRODUTOS ##########################
+// ########################## ENDPOINTS PARA PRODUTOS ##########################
 
 app.get('/v1/produtos', cors(), async (request, response) => {
   let message;
@@ -402,10 +402,15 @@ app.delete('/v1/admministrador/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-// ANDPOINT PARA AUTENTICAÇÃO
+// ########################## ENDPOINT PARA AUTENTICAÇÃO ##########################
 // usuario e senha - n fazer get, fazer post
+app.post('v1/:jwt/autenticar/admin', cors(), async (request, response) => {
+  const { jwt } = request.params;
+  
+  const createJwtResponse = 
+});
 
-// ##########################  END POINT PARA MENSAGENS ##########################
+// ########################## ENDPOINTS PARA MENSAGENS ##########################
 
 app.get('/v1/mensagens', cors(), async (request, response) => {
   let message;

@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions */
-import { MESSAGE_ERROR, MESSAGE_SUCESS } from '../modulo/config.js';
+import { MESSAGE_ERROR, MESSAGE_SUCESS } from '../module/config.js';
 import administradorDao from '../model/DAO/administradores.js';
 
 const buscarAdministrador = async (id) => {

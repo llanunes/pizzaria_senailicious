@@ -7,7 +7,7 @@
 * Data modificação: 01/12/2022
 ************************************************************************************************* */
 
-import { MESSAGE_ERROR, MESSAGE_SUCESS } from '../modulo/config.js';
+import { MESSAGE_ERROR, MESSAGE_SUCESS } from '../module/config.js';
 import ingredienteDao from '../model/DAO/ingredientes.js';
 
 const buscarIngrediente = async (id) => {
