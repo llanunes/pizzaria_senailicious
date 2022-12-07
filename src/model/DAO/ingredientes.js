@@ -1,16 +1,30 @@
-/** ************************************************************************************************
-* Objetivo: Arquivo responsável pela manipulação de dados com o BD (insert, update, delet e select)
-* Autor: Larissa Nunes
-* Versão: 1.0
-* Data criação: 06/10/2022
-* Data modificação: 01/12/2022
-************************************************************************************************* */
+/* eslint-disable import/extensions */
+/**
+ *
+ * Documentation - EN
+ *
+ * Objective: File responsible for handling data with the DB (insert, update, delete and select)
+ * Authors: Larissa Nunes Vaz Alves de Oliveira, Matheus Alves de Oliveira
+ * Version: 2.0.22
+ * Creation date: 17/11/2022
+ * Modification date: 07/12/2022
+ *
+ * ------------------------------------------------------------------------------
+ *
+ * Documentação - PT-br
+ *
+ * Objetivo: Arquivo responsável pela manipulação de dados com o BD (insert, update, delet e select)
+ * Autores: Larissa Nunes Vaz Alves de Oliveira, Matheus Alves de Oliveira
+ * Versão: 2.0.22
+ * Data de Criação: 17/11/2022
+ * Data de Modificação: 07/12/2022
+ *
+ */
 
-import { PrismaClient } from '@prisma/client';
+import { prisma } from "../utils/prisma-instance.js";
 
 const insertIngrediente = async (ingrediente) => {
   try {
-    const prisma = new PrismaClient();
 
     const sql = `insert into tbl_ingrediente (
             nome
@@ -31,7 +45,6 @@ const insertIngrediente = async (ingrediente) => {
 
 const updateIngrediente = async (ingrediente) => {
   try {
-    const prisma = new PrismaClient();
 
     const sql = `update tbl_ingrediente set
          nome = '${ingrediente.nome}',
@@ -51,7 +64,6 @@ const updateIngrediente = async (ingrediente) => {
 
 const deleteIngrediente = async (id) => {
   try {
-    const prisma = new PrismaClient();
 
     const sql = `delete from tbl_ingrediente 
         where id = '${id}'`;
@@ -67,7 +79,6 @@ const deleteIngrediente = async (id) => {
 };
 
 const selectAllIngredientes = async () => {
-  const prisma = new PrismaClient();
 
   const sql = `select cast(id as float) as 
             id, 
@@ -83,7 +94,6 @@ const selectAllIngredientes = async () => {
 };
 
 const selectByIdIngrediente = async (id) => {
-  const prisma = new PrismaClient();
 
   const sql = `select cast(id as float) as 
             id, 
@@ -93,7 +103,7 @@ const selectByIdIngrediente = async (id) => {
   const rsIngredientes = await prisma.$queryRawUnsafe(sql);
 
   if (rsIngredientes.length > 0) {
-    return rsIngredientes.length;
+    return rsIngredientes[0];
   }
   return false;
 };

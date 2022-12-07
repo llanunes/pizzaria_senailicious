@@ -1,8 +1,30 @@
-import { PrismaClient } from '@prisma/client';
+/* eslint-disable import/extensions */
+/**
+ *
+ * Documentation - EN
+ *
+ * Objective: File responsible for handling data with the DB (insert, update, delete and select)
+ * Authors: Larissa Nunes Vaz Alves de Oliveira, Matheus Alves de Oliveira
+ * Version: 2.0.22
+ * Creation date: 17/11/2022
+ * Modification date: 07/12/2022
+ *
+ * ------------------------------------------------------------------------------
+ *
+ * Documentação - PT-br
+ *
+ * Objetivo: Arquivo responsável pela manipulação de dados com o BD (insert, update, delet e select)
+ * Autores: Larissa Nunes Vaz Alves de Oliveira, Matheus Alves de Oliveira
+ * Versão: 2.0.22
+ * Data de Criação: 17/11/2022
+ * Data de Modificação: 07/12/2022
+ *
+ */
+
+import { prisma } from "../utils/prisma-instance.js";
 
 const insertAdministrador = async (administrador) => {
   try {
-    const prisma = new PrismaClient();
 
     const sql = `insert into tbl_administrador (
             nome,
@@ -27,7 +49,6 @@ const insertAdministrador = async (administrador) => {
 
 const updateAdministrador = async (administrador) => {
   try {
-    const prisma = new PrismaClient();
 
     const sql = `update tbl_administrador set
             nome = '${administrador.nome}',
@@ -48,7 +69,6 @@ const updateAdministrador = async (administrador) => {
 
 const deleteAdministrador = async (id) => {
   try {
-    const prisma = new PrismaClient();
 
     const sql = `delete from tbl_administrador 
         where id = '${id}'`;
@@ -64,7 +84,6 @@ const deleteAdministrador = async (id) => {
 };
 
 const selectAllAdministradores = async () => {
-  const prisma = new PrismaClient();
 
   const sql = `select cast(id as float) as 
         id, 
@@ -82,7 +101,6 @@ const selectAllAdministradores = async () => {
 };
 
 const selectByIdAdministrador = async (id) => {
-  const prisma = new PrismaClient();
 
   const sql = `select cast(id as float) as 
             id, 
@@ -94,7 +112,7 @@ const selectByIdAdministrador = async (id) => {
   const rsAdministrador = await prisma.$queryRawUnsafe(sql);
 
   if (rsAdministrador.length > 0) {
-    return rsAdministrador.length;
+    return rsAdministrador[0];
   }
   return false;
 };

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon src/app.js"
   },
-  "type": "module",
+  "type": "commonjs",
   "authors": [
     "Matheus Alves de Oliveira",
     "Larissa Nunes Vaz Alves de Oliveira"
