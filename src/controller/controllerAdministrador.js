@@ -18,12 +18,12 @@ const buscarAdministrador = async (id) => {
 };
 
 const novoAdministrador = async (administrador) => {
-  if (administrador.nome === '' || administrador.email === '' || administrador.senha === '') {
+  if (administrador.nome === '' || administrador.email === '' || administrador.senha === '' || administrador.foto === '') {
     return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
   }
   const novoAdministrador = administradorDao.insertAdministrador(administrador);
 
-  const result = novoAdministrador.insertAdministrador(administrador);
+  const result = novoAdministrador;
 
   if (result) {
     return { status: 201, message: MESSAGE_SUCESS.INSERT_ITEM };
@@ -35,7 +35,7 @@ const atualizarAdministrador = (administrador) => {
   if (administrador.id === '' || administrador.id === undefined) {
     return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID };
   }
-  if (administrador.nome === '' || administrador.email === '' || administrador.senha === '') {
+  if (administrador.nome === '' || administrador.email === '' || administrador.senha === '' || administrador.foto === '') {
     return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
   } if (!administrador.email.includes('@')) {
     return { status: 404, message: MESSAGE_ERROR.INVALID_EMAIL };
