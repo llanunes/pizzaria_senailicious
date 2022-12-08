@@ -59,7 +59,7 @@ const updateProduto = async (produto) => {
             imagem = '${produto.imagem}',
             tamanho = '${produto.tamanho}', 
             preco = '${produto.preco}', 
-            desconto = '${produto.desconto}',
+            desconto = '${produto.desconto}'
          
          where id = '${produto.id}'`;
 

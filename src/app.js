@@ -28,6 +28,8 @@ import controllerProduto from './controller/controllerProduto.js';
 import controllerIngredientes from './controller/controllerIngredientes.js';
 import controllerAdministrador from './controller/controllerAdministrador.js';
 import controllerMensagem from './controller/controllerMensagem.js';
+import { createJwt } from './middlewares/jwt.js';
+import verificarLoginAdmin from './middlewares/verificarLoginAdmin.js';
 
 const app = express();
 
@@ -404,10 +406,42 @@ app.delete('/v1/admministrador/:id', cors(), async (request, response) => {
 
 // ########################## ENDPOINT PARA AUTENTICAÇÃO ##########################
 // usuario e senha - n fazer get, fazer post
-app.post('v1/:jwt/autenticar/admin', cors(), async (request, response) => {
-  const { jwt } = request.params;
-  
-  const createJwtResponse = 
+app.post('/v1/login/admin', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const headerContentType = request.headers['content-type'];
+
+  if (headerContentType === 'application/json') {
+    const adminInfos = request.body;
+    console.log(await verificarLoginAdmin(adminInfos));
+    if (await verificarLoginAdmin(adminInfos)) {
+      const createJwtResponse = createJwt(adminInfos);
+      statusCode = createJwtResponse.status;
+      message = createJwtResponse.response;
+      response.status(statusCode).json({ message });
+    } else {
+      response.status(404).json({ message: 'Não achamos registros no banco' });
+    }
+  }
+  // try {
+  //   const headerContentType = request.headers['content-type'];
+
+  //   if (headerContentType === 'application/json') {
+  //     const adminInfos = request.body;
+  //     if (verificarLoginAdmin(adminInfos)) {
+  //       const createJwtResponse = createJwt(adminInfos);
+  //       response.status(201).json({
+  //         response: {
+  //           message: createJwtResponse.message,
+  //           token: createJwtResponse.token,
+  //         },
+  //       });
+  //     }
+  //   }
+  //   response.status(400).json({ message: MESSAGE_ERROR.EMPTY_BODY });
+  // } catch (err) {
+  //   console.log(err);
+  // }
 });
 
 // ########################## ENDPOINTS PARA MENSAGENS ##########################
@@ -476,8 +510,7 @@ app.post('/v1/mensagem', cors(), async (request, response) => {
     message = MESSAGE_ERROR.CONTENT_TYPE;
   }
 
-  response.status(statusCode);
-  response.json(message);
+  response.status(statusCode).json(message);
 });
 
 app.put('/v1/mensagem/:id', cors(), async (request, response) => {
