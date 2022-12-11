@@ -68,11 +68,11 @@ app.get('/v1/produto/:id', cors(), async (request, response) => {
       message = dadosProduto;
     } else {
       statusCode = 400;
-      message = MESSAGE_ERROR.REQUIRED_ID;
+      message = MESSAGE_ERROR.NOT_FOUND_BD;
     }
   } else {
     statusCode = 404;
-    message = MESSAGE_ERROR.NOT_FOUND_BD;
+    message = MESSAGE_ERROR.REQUIRED_ID;
   }
 
   response.status(statusCode);
