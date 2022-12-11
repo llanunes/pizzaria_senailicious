@@ -190,11 +190,11 @@ app.get('/v1/ingrediente/:id', cors(), async (request, response) => {
       message = dadosIngrediente;
     } else {
       statusCode = 400;
-      message = MESSAGE_ERROR.REQUIRED_ID;
+      message = MESSAGE_ERROR.NOT_FOUND_BD;
     }
   } else {
     statusCode = 404;
-    message = MESSAGE_ERROR.NOT_FOUND_BD;
+    message = MESSAGE_ERROR.INTERNAL_ERROR_DB;
   }
 
   response.status(statusCode);
