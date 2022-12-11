@@ -48,7 +48,6 @@ const insertProduto = async (produto) => {
     }
     return false;
   } catch (error) {
-    console.log(error);
     return false;
   }
 };
@@ -71,7 +70,6 @@ const updateProduto = async (produto) => {
     }
     return false;
   } catch (error) {
-    console.log(error);
     return false;
   }
 };
