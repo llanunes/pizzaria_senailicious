@@ -406,6 +406,8 @@ app.delete('/v1/admministrador/:id', cors(), async (request, response) => {
 
 // ########################## ENDPOINT PARA AUTENTICAÇÃO ##########################
 // usuario e senha - n fazer get, fazer post
+
+// Criando a chave JWT para o admin
 app.post('/v1/login/admin', cors(), async (request, response) => {
   let statusCode;
   let message;
@@ -413,12 +415,13 @@ app.post('/v1/login/admin', cors(), async (request, response) => {
 
   if (headerContentType === 'application/json') {
     const adminInfos = request.body;
-    console.log(await verificarLoginAdmin(adminInfos));
     if (await verificarLoginAdmin(adminInfos)) {
       const createJwtResponse = createJwt(adminInfos);
+
       statusCode = createJwtResponse.status;
       message = createJwtResponse.response;
-      response.status(statusCode).json({ message });
+
+      response.status(statusCode).json({ data: message });
     } else {
       response.status(404).json({ message: 'Não achamos registros no banco' });
     }

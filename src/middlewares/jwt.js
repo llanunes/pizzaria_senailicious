@@ -5,7 +5,8 @@ import { MESSAGE_SUCESS } from '../module/config.js';
 
 export const createJwt = (admin) => {
   const token = jwt.sign({
-    admin,
+    id: admin.id,
+    email: admin.email,
   }, process.env.SECRET, {
     expiresIn: '7d',
   });
