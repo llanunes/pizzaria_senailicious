@@ -120,7 +120,7 @@ app.put('/v1/produto/:id', cors(), async (request, response) => {
       if (id !== '' && id !== undefined) {
         dadosBody.id = id;
 
-        const novoProduto = controllerProduto.atualizarProduto(dadosBody);
+        const novoProduto = await controllerProduto.atualizarProduto(dadosBody);
 
         statusCode = novoProduto.status;
         message = novoProduto.message;
@@ -147,7 +147,7 @@ app.delete('/v1/produto/:id', cors(), async (request, response) => {
   const { id } = request.params;
 
   if (id !== '' && id !== undefined) {
-    const deletarProduto = controllerProduto.deletarProduto(id);
+    const deletarProduto = await controllerProduto.deletarProduto(id);
 
     statusCode = deletarProduto.status;
     message = deletarProduto.message;
@@ -242,7 +242,7 @@ app.put('/v1/ingrediente/:id', cors(), async (request, response) => {
       if (id !== '' && id !== undefined) {
         dadosBody.id = id;
 
-        const novoIngrediente = controllerIngredientes.atualizarIngrediente(dadosBody);
+        const novoIngrediente = await controllerIngredientes.atualizarIngrediente(dadosBody);
 
         statusCode = novoIngrediente.status;
         message = novoIngrediente.message;
@@ -269,7 +269,7 @@ app.delete('/v1/ingrediente/:id', cors(), async (request, response) => {
   const { id } = request.params;
 
   if (id !== '' && id !== undefined) {
-    const deletarIngrediente = controllerIngredientes.deletarIngrediente(id);
+    const deletarIngrediente = await controllerIngredientes.deletarIngrediente(id);
 
     statusCode = deletarIngrediente.status;
     message = deletarIngrediente.message;
@@ -277,8 +277,7 @@ app.delete('/v1/ingrediente/:id', cors(), async (request, response) => {
     statusCode = 400;
     message = MESSAGE_ERROR.REQUIRED_ID;
   }
-  response.status(statusCode);
-  response.json(message);
+  response.status(statusCode).json(message);
 });
 
 // ########################## ENDPOINTS PARA ADMINISTRADORES ##########################
@@ -298,8 +297,7 @@ app.get('/v1/administradores', cors(), async (request, response) => {
     statusCode = 404;
     message = MESSAGE_ERROR.NOT_FOUND_BD;
   }
-  response.status(statusCode);
-  response.json(message);
+  response.status(statusCode).json(message);
 });
 
 app.get('/v1/administrador/:id', cors(), async (request, response) => {
@@ -406,9 +404,7 @@ app.delete('/v1/admministrador/:id', cors(), async (request, response) => {
 });
 
 // ########################## ENDPOINT PARA AUTENTICAÇÃO ##########################
-// usuario e senha - n fazer get, fazer post
 
-// Criando a chave JWT para o admin
 app.post('/v1/login/admin', cors(), async (request, response) => {
   let statusCode;
   let message;
@@ -427,25 +423,6 @@ app.post('/v1/login/admin', cors(), async (request, response) => {
       response.status(404).json({ message: 'Não achamos registros no banco' });
     }
   }
-  // try {
-  //   const headerContentType = request.headers['content-type'];
-
-  //   if (headerContentType === 'application/json') {
-  //     const adminInfos = request.body;
-  //     if (verificarLoginAdmin(adminInfos)) {
-  //       const createJwtResponse = createJwt(adminInfos);
-  //       response.status(201).json({
-  //         response: {
-  //           message: createJwtResponse.message,
-  //           token: createJwtResponse.token,
-  //         },
-  //       });
-  //     }
-  //   }
-  //   response.status(400).json({ message: MESSAGE_ERROR.EMPTY_BODY });
-  // } catch (err) {
-  //   console.log(err);
-  // }
 });
 
 // ########################## ENDPOINTS PARA MENSAGENS ##########################
@@ -531,7 +508,7 @@ app.put('/v1/mensagem/:id', cors(), async (request, response) => {
       if (id !== '' && id !== undefined) {
         dadosBody.id = id;
 
-        const novaMensagem = controllerMensagem.atualizarMensagem(dadosBody);
+        const novaMensagem = await controllerMensagem.atualizarMensagem(dadosBody);
 
         statusCode = novaMensagem.status;
         message = novaMensagem.message;
@@ -558,7 +535,7 @@ app.delete('/v1/mensagem/:id', cors(), async (request, response) => {
   const { id } = request.params;
 
   if (id !== '' && id !== undefined) {
-    const deletarMensagem = controllerMensagem.deletarMensagem(id);
+    const deletarMensagem = await controllerMensagem.deletarMensagem(id);
 
     statusCode = deletarMensagem.status;
     message = deletarMensagem.message;
