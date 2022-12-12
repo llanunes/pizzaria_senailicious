@@ -10,17 +10,36 @@
 import { MESSAGE_ERROR, MESSAGE_SUCESS } from '../module/config.js';
 import produtoDao from '../model/DAO/produtos.js';
 
-const buscarProduto = async (id) => {
-  const dadosProdutoJSON = {};
+const listarProdutos = async () => {
+  const produto = await produtoDao.selectAllProdutos();
 
+  if (produto) {
+    const resposne = produto.map((item) => {
+      const tipo = { id: item.id_tipo_produto, nome: item.tipo_produto };
+
+      delete item.id_tipo_produto;
+      delete item.tipo_produto;
+
+      item.tipo = tipo;
+      return item;
+    });
+
+    return resposne;
+  }
+  return false;
+};
+
+const buscarProduto = async (id) => {
   if (id === '' || id === undefined) {
     return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID };
   }
   const dadosProduto = await produtoDao.selectByIdProduto(id);
 
+  console.log(dadosProduto);
+
   if (dadosProduto) {
-    dadosProdutoJSON.produto = dadosProduto;
-    return dadosProdutoJSON;
+    const tipo = { id: dadosProduto. };
+    return { dadosProduto };
   }
   return false;
 };
@@ -67,15 +86,6 @@ const atualizarProduto = (produto) => {
     return { status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM };
   }
   return { status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB };
-};
-
-const listarProdutos = async () => {
-  const produto = await produtoDao.selectAllProdutos();
-
-  if (produto) {
-    return produto;
-  }
-  return false;
 };
 
 const controllerProduto = {
