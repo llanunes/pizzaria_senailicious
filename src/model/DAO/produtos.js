@@ -25,7 +25,7 @@ import { prisma } from '../utils/prisma-instance.js';
 
 const insertProduto = async (produto) => {
   try {
-    const sql = `insert into tbl_produto (
+    const sql = `INSERT INTO tbl_produto (
         nome,
         imagem,
         tamanho, 
@@ -33,7 +33,7 @@ const insertProduto = async (produto) => {
         desconto, 
         id_tipo_produto
         )
-        values (
+        VALUES (
             '${produto.nome}',
             '${produto.imagem}',
             '${produto.tamanho}',
@@ -54,14 +54,16 @@ const insertProduto = async (produto) => {
 
 const updateProduto = async (produto) => {
   try {
-    const sql = `update tbl_produto set
+    const sql = `UPDATE tbl_produto SET
             nome = '${produto.nome}',
             imagem = '${produto.imagem}',
             tamanho = '${produto.tamanho}', 
             preco = '${produto.preco}', 
-            desconto = '${produto.desconto}'
+            desconto = ${produto.desconto}
          
-         where id = '${produto.id}'`;
+         WHERE id = ${produto.id};`;
+
+         console.log(sql);
 
     const result = await prisma.$executeRawUnsafe(sql);
 

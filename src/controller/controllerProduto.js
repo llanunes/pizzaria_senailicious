@@ -43,8 +43,7 @@ const deletarProduto = (id) => {
   }
   const produto = buscarProduto(id);
   if (produto) {
-    const deleteProduto = produtoDao.deleteProduto(id);
-    const result = deleteProduto;
+    const result = produtoDao.deleteProduto(id);
 
     if (result) {
       return { status: 201, message: MESSAGE_SUCESS.DELETE_ITEM };
@@ -58,12 +57,11 @@ const atualizarProduto = (produto) => {
   if (produto.id === '' || produto.id === undefined) {
     return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID };
   }
-  if (produto.nome === '' || produto.imagem === '' || produto.tamanho === '' || produto.preco === '' || produto.desconto === null || produto.id_tipo_produto === '') {
+  if (produto.nome === '' || produto.imagem === '' || produto.tamanho === '' || produto.preco === '' || produto.desconto === undefined || produto.id_tipo_produto === '') {
     return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
   }
 
-  const atualizarProduto = produtoDao.updateProduto(produto);
-  const result = atualizarProduto;
+  const result = produtoDao.updateProduto(produto);
 
   if (result) {
     return { status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM };
