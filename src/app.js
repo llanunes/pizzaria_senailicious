@@ -914,5 +914,6 @@ app.put('/v1/tipobebida/:id', cors(), async (request, response) => {
 });
 
 app.listen(8080, () => {
+  // eslint-disable-next-line no-console
   console.log('Server listening at port 8080...');
 });
