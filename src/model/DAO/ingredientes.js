@@ -59,7 +59,7 @@ const updateIngrediente = async (ingrediente) => {
 const deleteIngrediente = async (id) => {
   try {
     const sql = `
-    DELETE FROM tbl_tipo_produto_ingrediente WHERE tbl_tipo_produto_ingrediente.id_ingrediente = ${id};
+    DELETE FROM tbl_produto_ingrediente WHERE tbl_produto_ingrediente.id_ingrediente = ${id};
     DELETE FROM tbl_ingrediente WHERE tbl_ingrediente.id = ${id};`;
 
     const result = await prisma.$executeRawUnsafe(sql);

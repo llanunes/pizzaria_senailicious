@@ -27,6 +27,7 @@ import { MESSAGE_ERROR } from './module/config.js';
 import controllerProduto from './controller/controllerProduto.js';
 import controllerIngredientes from './controller/controllerIngredientes.js';
 import controllerAdministrador from './controller/controllerAdministrador.js';
+import controllerCategoria from './controller/controllerCategoria.js';
 import controllerMensagem from './controller/controllerMensagem.js';
 import { createJwt } from './middlewares/jwt.js';
 import verificarLoginAdmin from './middlewares/verificarLoginAdmin.js';
@@ -567,6 +568,93 @@ app.delete('/v1/mensagem/:id', cors(), async (request, response) => {
   }
   response.status(statusCode);
   response.json(message);
+});
+
+// TIPO PRODUTO
+
+app.get('/v1/tipoproduto/:id', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const dadosTipoProduto = await controllerCategoria.buscarTipoProduto(id);
+
+    if (dadosTipoProduto) {
+      statusCode = 200;
+      message = dadosTipoProduto;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.NOT_FOUND_BD;
+    }
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.REQUIRED_ID;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.get('/v1/tipoprodutos', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+
+  const dadosTipoProdutos = await controllerCategoria.listarTiposProdutos();
+
+  if (dadosTipoProdutos) {
+    statusCode = 200;
+    message = dadosTipoProdutos;
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.NOT_FOUND_BD;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.delete('/v1/tipoproduto/:id', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const deletarTipoProduto = controllerCategoria.deletarTipoProduto(id);
+
+    statusCode = deletarTipoProduto.status;
+    message = deletarTipoProduto.message;
+  } else {
+    statusCode = 400;
+    message = MESSAGE_ERROR.REQUIRED_ID;
+  }
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.post('/v1/tipoproduto', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const headerContentType = request.headers['content-type'];
+
+  if (headerContentType === 'application/json') {
+    const dadosBody = request.body;
+
+    if (JSON.stringify(dadosBody) !== '{}') {
+      const novoTipoProduto = await controllerCategoria.novoTipoProduto(dadosBody);
+
+      statusCode = novoTipoProduto.status;
+      message = novoTipoProduto.message;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.EMPTY_BODY;
+    }
+  } else {
+    statusCode = 415;
+    message = MESSAGE_ERROR.CONTENT_TYPE;
+  }
+
+  response.status(statusCode).json(message);
 });
 
 app.listen(8080, () => {

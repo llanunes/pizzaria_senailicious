@@ -129,6 +129,7 @@ const selectByIdProduto = async (id) => {
   return false;
 };
 
+
 export default {
   updateProduto,
   deleteProduto,
