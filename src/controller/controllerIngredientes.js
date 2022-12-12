@@ -37,14 +37,13 @@ const novoIngrediente = async (ingrediente) => {
   return { status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB };
 };
 
-const deletarIngrediente = (id) => {
+const deletarIngrediente = async (id) => {
   if (id === '' || id === undefined) {
     return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID };
   }
-  const ingrediente = buscarIngrediente(id);
+  const ingrediente = await buscarIngrediente(id);
   if (ingrediente) {
-    const deleteIngrediente = ingredienteDao.deleteIngrediente(id);
-    const result = deleteIngrediente;
+    const result = await ingredienteDao.deleteIngrediente(id);
 
     if (result) {
       return { status: 201, message: MESSAGE_SUCESS.DELETE_ITEM };
@@ -54,7 +53,7 @@ const deletarIngrediente = (id) => {
   return { status: 404, message: MESSAGE_ERROR.NOT_FOUND_BD };
 };
 
-const atualizarIngrediente = (ingrediente) => {
+const atualizarIngrediente = async (ingrediente) => {
   if (ingrediente.id === '' || ingrediente.id === undefined) {
     return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID };
   }
@@ -62,7 +61,7 @@ const atualizarIngrediente = (ingrediente) => {
     return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
   }
 
-  const result = ingredienteDao.updateIngrediente(ingrediente);
+  const result = await ingredienteDao.updateIngrediente(ingrediente);
 
   if (result) {
     return { status: 200, message: MESSAGE_SUCESS.UPDATE_ITEM };

@@ -1,5 +1,5 @@
+/* eslint-disable import/prefer-default-export */
 /* eslint-disable import/extensions */
-// TODO: Jwt authentication
 import jwt from 'jsonwebtoken';
 import { MESSAGE_SUCESS } from '../module/config.js';
 
@@ -12,8 +12,4 @@ export const createJwt = (admin) => {
   });
 
   return { status: 200, response: { message: MESSAGE_SUCESS.JWT_CREATED, token } };
-};
-
-export const verifyJwt = () => {
-  // TODO
 };

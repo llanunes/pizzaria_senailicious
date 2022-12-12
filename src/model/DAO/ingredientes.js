@@ -58,9 +58,9 @@ const updateIngrediente = async (ingrediente) => {
 
 const deleteIngrediente = async (id) => {
   try {
-    const sql = `
-    DELETE FROM tbl_tipo_produto_ingrediente WHERE tbl_tipo_produto_ingrediente.id_ingrediente = ${id};
-    DELETE FROM tbl_ingrediente WHERE tbl_ingrediente.id = ${id};`;
+    const sql = `DELETE FROM tbl_ingrediente WHERE tbl_ingrediente.id = ${id};`;
+
+    console.log(sql);
 
     const result = await prisma.$executeRawUnsafe(sql);
     if (result) {
@@ -68,15 +68,16 @@ const deleteIngrediente = async (id) => {
     }
     return false;
   } catch (error) {
+    console.log(error);
     return false;
   }
 };
 
 const selectAllIngredientes = async () => {
-  const sql = `select cast(id as float) as 
+  const sql = `SELECT CAST(id AS FLOAT) AS 
             id, 
             nome
-    from tbl_ingrediente order by id desc`;
+    FROM tbl_ingrediente ORDER BY id DESC`;
 
   const rsIngredientes = await prisma.$queryRawUnsafe(sql);
 
