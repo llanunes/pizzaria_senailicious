@@ -24,29 +24,31 @@
 import express from 'express';
 import cors from 'cors';
 import { MESSAGE_ERROR } from './module/config.js';
-import controllerProduto from './controller/controllerProduto.js';
+//  import controllerProduto from './controller/controllerProduto.js';
 import controllerIngredientes from './controller/controllerIngredientes.js';
 import controllerAdministrador from './controller/controllerAdministrador.js';
 import controllerCategoria from './controller/controllerCategoria.js';
 import controllerMensagem from './controller/controllerMensagem.js';
 import { createJwt } from './middlewares/jwt.js';
 import verificarLoginAdmin from './middlewares/verificarLoginAdmin.js';
+import controllerPizza from './controller/controllerPizza.js';
+import controllerBebida from './controller/controllerBebida.js';
 
 const app = express();
 
 app.use(express.json(), cors());
 
-// ########################## ENDPOINTS PARA PRODUTOS ##########################
+// ########################## ENDPOINTS PARA PIZZAS ##########################
 
-app.get('/v1/produtos', cors(), async (request, response) => {
+app.get('/v1/pizzas', cors(), async (request, response) => {
   let message;
   let statusCode;
 
-  const dadosProduto = await controllerProduto.listarProdutos();
+  const dadosPizza = await controllerPizza.listarPizzas();
 
-  if (dadosProduto) {
+  if (dadosPizza) {
     statusCode = 200;
-    message = { produtos: dadosProduto };
+    message = { pizzas: dadosPizza };
   } else {
     statusCode = 404;
     message = MESSAGE_ERROR.NOT_FOUND_BD;
@@ -56,17 +58,17 @@ app.get('/v1/produtos', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.get('/v1/produto/:id', cors(), async (request, response) => {
+app.get('/v1/pizza/:id', cors(), async (request, response) => {
   let message;
   let statusCode;
   const { id } = request.params;
 
   if (id !== '' && id !== undefined) {
-    const dadosProduto = await controllerProduto.buscarProduto(id);
+    const dadosPizza = await controllerPizza.buscarPizza(id);
 
-    if (dadosProduto) {
+    if (dadosPizza) {
       statusCode = 200;
-      message = { produto: dadosProduto };
+      message = { pizzas: dadosPizza };
     } else {
       statusCode = 400;
       message = MESSAGE_ERROR.NOT_FOUND_BD;
@@ -80,7 +82,7 @@ app.get('/v1/produto/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.post('/v1/produto', cors(), async (request, response) => {
+app.post('/v1/pizza', cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -89,10 +91,10 @@ app.post('/v1/produto', cors(), async (request, response) => {
     const dadosBody = request.body;
 
     if (JSON.stringify(dadosBody) !== '{}') {
-      const novoProduto = await controllerProduto.novoProduto(dadosBody);
+      const novaPizza = await controllerPizza.novaPizza(dadosBody);
 
-      statusCode = novoProduto.status;
-      message = novoProduto.message;
+      statusCode = novaPizza.status;
+      message = novaPizza.message;
     } else {
       statusCode = 400;
       message = MESSAGE_ERROR.EMPTY_BODY;
@@ -106,7 +108,7 @@ app.post('/v1/produto', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.put('/v1/produto/:id', cors(), async (request, response) => {
+app.put('/v1/pizza/:id', cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -120,10 +122,10 @@ app.put('/v1/produto/:id', cors(), async (request, response) => {
       if (id !== '' && id !== undefined) {
         dadosBody.id = id;
 
-        const novoProduto = await controllerProduto.atualizarProduto(dadosBody);
+        const novaPizza = await controllerPizza.atualizarPizza(dadosBody);
 
-        statusCode = novoProduto.status;
-        message = novoProduto.message;
+        statusCode = novaPizza.status;
+        message = novaPizza.message;
       } else {
         statusCode = 400;
         message = MESSAGE_ERROR.REQUIRED_ID;
@@ -141,16 +143,16 @@ app.put('/v1/produto/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.delete('/v1/produto/:id', cors(), async (request, response) => {
+app.delete('/v1/pizza/:id', cors(), async (request, response) => {
   let statusCode;
   let message;
   const { id } = request.params;
 
   if (id !== '' && id !== undefined) {
-    const deletarProduto = await controllerProduto.deletarProduto(id);
+    const deletarPizza = await controllerPizza.deletarPizza(id);
 
-    statusCode = deletarProduto.status;
-    message = deletarProduto.message;
+    statusCode = deletarPizza.status;
+    message = deletarPizza.message;
   } else {
     statusCode = 400;
     message = MESSAGE_ERROR.REQUIRED_ID;
@@ -158,6 +160,127 @@ app.delete('/v1/produto/:id', cors(), async (request, response) => {
   response.status(statusCode);
   response.json(message);
 });
+// ##################################### BEBIDAS #############################################
+app.get('/v1/bebidas', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+
+  const dadosBebida = await controllerBebida.listarBebidas();
+
+  if (dadosBebida) {
+    statusCode = 200;
+    message = { bebidas: dadosBebida };
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.NOT_FOUND_BD;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.get('/v1/bebida/:id', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const dadosBebida = await controllerBebida.buscarBebida(id);
+
+    if (dadosBebida) {
+      statusCode = 200;
+      message = { bebidas: dadosBebida };
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.NOT_FOUND_BD;
+    }
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.REQUIRED_ID;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.post('/v1/bebida', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const headerContentType = request.headers['content-type'];
+
+  if (headerContentType === 'application/json') {
+    const dadosBody = request.body;
+
+    if (JSON.stringify(dadosBody) !== '{}') {
+      const novaBebida = await controllerBebida.novaBebida(dadosBody);
+
+      statusCode = novaBebida.status;
+      message = novaBebida.message;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.EMPTY_BODY;
+    }
+  } else {
+    statusCode = 415;
+    message = MESSAGE_ERROR.CONTENT_TYPE;
+  }
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.put('/v1/bebida/:id', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const headerContentType = request.headers['content-type'];
+
+  if (headerContentType === 'application/json') {
+    const dadosBody = request.body;
+
+    if (JSON.stringify(dadosBody) !== '{}') {
+      const { id } = request.params;
+
+      if (id !== '' && id !== undefined) {
+        dadosBody.id = id;
+
+        const novaBebida = await controllerBebida.atualizarBebida(dadosBody);
+
+        statusCode = novaBebida.status;
+        message = novaBebida.message;
+      } else {
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+      }
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.EMPTY_BODY;
+    }
+  } else {
+    statusCode = 415;
+    message = MESSAGE_ERROR.CONTENT_TYPE;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.delete('/v1/bebida/:id', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const deletarBebida = await controllerBebida.deletarBebida(id);
+
+    statusCode = deletarBebida.status;
+    message = deletarBebida.message;
+  } else {
+    statusCode = 400;
+    message = MESSAGE_ERROR.REQUIRED_ID;
+  }
+  response.status(statusCode);
+  response.json(message);
+});
+
 
 // ########################## ENDPOINTS PARA INGREDIENTES ##########################
 
