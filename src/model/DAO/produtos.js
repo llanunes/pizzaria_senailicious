@@ -63,7 +63,7 @@ const updateProduto = async (produto) => {
          
          WHERE id = ${produto.id};`;
 
-         console.log(sql);
+    console.log(sql);
 
     const result = await prisma.$executeRawUnsafe(sql);
 
@@ -115,15 +115,19 @@ const selectAllProdutos = async () => {
 };
 
 const selectByIdProduto = async (id) => {
-  const sql = `select cast(id as float) as 
-        id, 
-        nome, 
-        imagem, 
-        tamanho, 
-        preco, 
-        desconto, 
-        id_tipo_produto 
-    from tbl_produto where id = ${id}`;
+  const sql = `SELECT CAST(tbl_produto.id AS FLOAT) AS
+    id,
+    tbl_produto.nome,
+    tbl_produto.imagem,
+    tbl_produto.tamanho,
+    tbl_produto.preco,
+    tbl_produto.desconto,
+    tbl_tipo_produto.id AS id_tipo_produto,
+    tbl_tipo_produto.tipo AS tipo_produto
+    FROM tbl_produto
+    INNER JOIN tbl_tipo_produto
+    ON tbl_tipo_produto.id = tbl_produto.id_tipo_produto
+    WHERE tbl_produto.id = ${id};`;
 
   const rsProdutos = await prisma.$queryRawUnsafe(sql);
 
@@ -132,7 +136,6 @@ const selectByIdProduto = async (id) => {
   }
   return false;
 };
-
 
 export default {
   updateProduto,

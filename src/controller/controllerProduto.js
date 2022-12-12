@@ -14,7 +14,7 @@ const listarProdutos = async () => {
   const produto = await produtoDao.selectAllProdutos();
 
   if (produto) {
-    const resposne = produto.map((item) => {
+    const response = produto.map((item) => {
       const tipo = { id: item.id_tipo_produto, nome: item.tipo_produto };
 
       delete item.id_tipo_produto;
@@ -24,7 +24,7 @@ const listarProdutos = async () => {
       return item;
     });
 
-    return resposne;
+    return response;
   }
   return false;
 };
@@ -38,8 +38,13 @@ const buscarProduto = async (id) => {
   console.log(dadosProduto);
 
   if (dadosProduto) {
-    const tipo = { id: dadosProduto. };
-    return { dadosProduto };
+    const tipo = { id: dadosProduto.id_tipo_produto, nome: dadosProduto.tipo_produto };
+
+    delete dadosProduto.id_tipo_produto;
+    delete dadosProduto.tipo_produto;
+    dadosProduto.tipo = tipo;
+
+    return dadosProduto;
   }
   return false;
 };

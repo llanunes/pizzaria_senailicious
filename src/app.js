@@ -46,7 +46,7 @@ app.get('/v1/produtos', cors(), async (request, response) => {
 
   if (dadosProduto) {
     statusCode = 200;
-    message = dadosProduto;
+    message = { produtos: dadosProduto };
   } else {
     statusCode = 404;
     message = MESSAGE_ERROR.NOT_FOUND_BD;
@@ -66,7 +66,7 @@ app.get('/v1/produto/:id', cors(), async (request, response) => {
 
     if (dadosProduto) {
       statusCode = 200;
-      message = dadosProduto;
+      message = { produto: dadosProduto };
     } else {
       statusCode = 400;
       message = MESSAGE_ERROR.NOT_FOUND_BD;
@@ -169,7 +169,7 @@ app.get('/v1/ingredientes', cors(), async (request, response) => {
 
   if (dadosIngrediente) {
     statusCode = 200;
-    message = dadosIngrediente;
+    message = { ingredientes: dadosIngrediente };
   } else {
     statusCode = 404;
     message = MESSAGE_ERROR.NOT_FOUND_BD;
@@ -790,7 +790,6 @@ app.put('/v1/tipopizza/:id', cors(), async (request, response) => {
   response.status(statusCode);
   response.json(message);
 });
-
 
 // ###################################
 
