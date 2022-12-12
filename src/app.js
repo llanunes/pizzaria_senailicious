@@ -415,7 +415,7 @@ app.get('/v1/administradores', cors(), async (request, response) => {
   // valida se existe retorno
   if (dadosAdministrador) {
     statusCode = 200;
-    message = dadosAdministrador;
+    message = { admins: dadosAdministrador };
   } else {
     statusCode = 404;
     message = MESSAGE_ERROR.NOT_FOUND_BD;
@@ -436,11 +436,11 @@ app.get('/v1/administrador/:id', cors(), async (request, response) => {
       message = dadosAdministrador;
     } else {
       statusCode = 400;
-      message = MESSAGE_ERROR.REQUIRED_ID;
+      message = MESSAGE_ERROR.NOT_FOUND_BD;
     }
   } else {
     statusCode = 404;
-    message = MESSAGE_ERROR.NOT_FOUND_BD;
+    message = MESSAGE_ERROR.REQUIRED_ID;
   }
 
   response.status(statusCode);
@@ -487,7 +487,7 @@ app.put('/v1/administrador/:id', cors(), async (request, response) => {
       if (id !== '' && id !== undefined) {
         dadosBody.id = id;
 
-        const novoAdministrador = controllerAdministrador.atualizarAdministrador(dadosBody);
+        const novoAdministrador = await controllerAdministrador.atualizarAdministrador(dadosBody);
 
         statusCode = novoAdministrador.status;
         message = novoAdministrador.message;
@@ -514,7 +514,8 @@ app.delete('/v1/administrador/:id', cors(), async (request, response) => {
   const { id } = request.params;
 
   if (id !== '' && id !== undefined) {
-    const deletarAdministrador = controllerAdministrador.deletarAdministrador(id);
+    const deletarAdministrador = await controllerAdministrador.deletarAdministrador(id);
+    console.log(deletarAdministrador);
 
     statusCode = deletarAdministrador.status;
     message = deletarAdministrador.message;
@@ -1037,5 +1038,6 @@ app.put('/v1/tipobebida/:id', cors(), async (request, response) => {
 });
 
 app.listen(8080, () => {
+  // eslint-disable-next-line no-console
   console.log('Server listening at port 8080...');
 });

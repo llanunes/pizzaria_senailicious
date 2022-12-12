@@ -50,13 +50,13 @@ const insertAdministrador = async (administrador) => {
 
 const updateAdministrador = async (administrador) => {
   try {
-    const sql = `update tbl_administrador set
+    const sql = `UPDATE tbl_administrador SET
             nome = '${administrador.nome}',
-            email = '${administrador.imagem}',
+            email = '${administrador.email}',
             senha = '${administrador.senha}',
             foto = '${administrador.foto}'
          
-         where id = '${administrador.id}'`;
+         WHERE id = ${administrador.id};`;
 
     const result = await prisma.$executeRawUnsafe(sql);
     if (result) {

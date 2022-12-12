@@ -19,11 +19,12 @@ const buscarAdministrador = async (id) => {
 
 const novoAdministrador = async (administrador) => {
   if (administrador.nome === '' || administrador.email === '' || administrador.senha === '' || administrador.foto === '') {
-    return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
+    return { status: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS };
   }
-  const novoAdministrador = administradorDao.insertAdministrador(administrador);
-
-  const result = novoAdministrador;
+  if (!administrador.email.includes('@')) {
+    return { status: 400, message: MESSAGE_ERROR.INVALID_EMAIL };
+  }
+  const result = await administradorDao.insertAdministrador(administrador);
 
   if (result) {
     return { status: 201, message: MESSAGE_SUCESS.INSERT_ITEM };
@@ -31,32 +32,31 @@ const novoAdministrador = async (administrador) => {
   return { status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB };
 };
 
-const atualizarAdministrador = (administrador) => {
+const atualizarAdministrador = async (administrador) => {
   if (administrador.id === '' || administrador.id === undefined) {
     return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID };
   }
   if (administrador.nome === '' || administrador.email === '' || administrador.senha === '' || administrador.foto === '') {
-    return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
+    return { status: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS };
   } if (!administrador.email.includes('@')) {
-    return { status: 404, message: MESSAGE_ERROR.INVALID_EMAIL };
+    return { status: 400, message: MESSAGE_ERROR.INVALID_EMAIL };
   }
-  const atualizarAdministrador = administradorDao.updateAdministrador(administrador);
-  const result = atualizarAdministrador;
+  const result = await administradorDao.updateAdministrador(administrador);
+  console.log(result);
 
   if (result) {
     return { status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM };
   }
-  return { status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB };
+  return { status: 404, message: MESSAGE_ERROR.NOT_FOUND_BD };
 };
 
-const deletarAdministrador = (id) => {
+const deletarAdministrador = async (id) => {
   if (id === '' || id === undefined) {
     return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID };
   }
-  const administrador = buscarAdministrador(id);
+  const administrador = await buscarAdministrador(id);
   if (administrador) {
-    const deletarAdministrador = administradorDao.deleteAdministrador(id);
-    const result = deletarAdministrador;
+    const result = await administradorDao.deleteAdministrador(id);
 
     if (result) {
       return { status: 201, message: MESSAGE_SUCESS.DELETE_ITEM };
