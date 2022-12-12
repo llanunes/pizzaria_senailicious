@@ -40,9 +40,8 @@ const atualizarAdministrador = (administrador) => {
   } if (!administrador.email.includes('@')) {
     return { status: 404, message: MESSAGE_ERROR.INVALID_EMAIL };
   }
-  const atualizarAdministrador = administradorDao.atualizarAdministrador();
-
-  const result = atualizarAdministrador.updateAdministrador(administrador);
+  const atualizarAdministrador = administradorDao.atualizarAdministrador(administrador);
+  const result = atualizarAdministrador;
 
   if (result) {
     return { status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM };
