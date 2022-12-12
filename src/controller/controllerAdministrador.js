@@ -40,7 +40,7 @@ const atualizarAdministrador = (administrador) => {
   } if (!administrador.email.includes('@')) {
     return { status: 404, message: MESSAGE_ERROR.INVALID_EMAIL };
   }
-  const atualizarAdministrador = administradorDao.atualizarAdministrador(administrador);
+  const atualizarAdministrador = administradorDao.updateAdministrador(administrador);
   const result = atualizarAdministrador;
 
   if (result) {
@@ -56,7 +56,7 @@ const deletarAdministrador = (id) => {
   const administrador = buscarAdministrador(id);
   if (administrador) {
     const deletarAdministrador = administradorDao.deleteAdministrador(id);
-    const result = deletarAdministrador.deleteAdministrador(id);
+    const result = deletarAdministrador;
 
     if (result) {
       return { status: 201, message: MESSAGE_SUCESS.DELETE_ITEM };

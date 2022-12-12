@@ -60,15 +60,12 @@ const deleteIngrediente = async (id) => {
   try {
     const sql = `DELETE FROM tbl_ingrediente WHERE tbl_ingrediente.id = ${id};`;
 
-    console.log(sql);
-
     const result = await prisma.$executeRawUnsafe(sql);
     if (result) {
       return true;
     }
     return false;
   } catch (error) {
-    console.log(error);
     return false;
   }
 };

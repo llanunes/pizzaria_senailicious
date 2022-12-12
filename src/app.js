@@ -27,6 +27,7 @@ import { MESSAGE_ERROR } from './module/config.js';
 import controllerProduto from './controller/controllerProduto.js';
 import controllerIngredientes from './controller/controllerIngredientes.js';
 import controllerAdministrador from './controller/controllerAdministrador.js';
+import controllerCategoria from './controller/controllerCategoria.js';
 import controllerMensagem from './controller/controllerMensagem.js';
 import { createJwt } from './middlewares/jwt.js';
 import verificarLoginAdmin from './middlewares/verificarLoginAdmin.js';
@@ -384,7 +385,7 @@ app.put('/v1/administrador/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.delete('/v1/admministrador/:id', cors(), async (request, response) => {
+app.delete('/v1/administrador/:id', cors(), async (request, response) => {
   let statusCode;
   let message;
   const { id } = request.params;
@@ -542,6 +543,373 @@ app.delete('/v1/mensagem/:id', cors(), async (request, response) => {
     statusCode = 400;
     message = MESSAGE_ERROR.REQUIRED_ID;
   }
+  response.status(statusCode);
+  response.json(message);
+});
+
+// TIPO PRODUTO
+
+app.get('/v1/tipoproduto/:id', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const dadosTipoProduto = await controllerCategoria.buscarTipoProduto(id);
+
+    if (dadosTipoProduto) {
+      statusCode = 200;
+      message = dadosTipoProduto;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.NOT_FOUND_BD;
+    }
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.REQUIRED_ID;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.get('/v1/tipoprodutos', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+
+  const dadosTipoProdutos = await controllerCategoria.listarTiposProdutos();
+
+  if (dadosTipoProdutos) {
+    statusCode = 200;
+    message = dadosTipoProdutos;
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.NOT_FOUND_BD;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.delete('/v1/tipoproduto/:id', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const deletarTipoProduto = controllerCategoria.deletarTipoProduto(id);
+
+    statusCode = deletarTipoProduto.status;
+    message = deletarTipoProduto.message;
+  } else {
+    statusCode = 400;
+    message = MESSAGE_ERROR.REQUIRED_ID;
+  }
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.post('/v1/tipoproduto', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const headerContentType = request.headers['content-type'];
+
+  if (headerContentType === 'application/json') {
+    const dadosBody = request.body;
+
+    if (JSON.stringify(dadosBody) !== '{}') {
+      const novoTipoProduto = await controllerCategoria.novoTipoProduto(dadosBody);
+
+      statusCode = novoTipoProduto.status;
+      message = novoTipoProduto.message;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.EMPTY_BODY;
+    }
+  } else {
+    statusCode = 415;
+    message = MESSAGE_ERROR.CONTENT_TYPE;
+  }
+
+  response.status(statusCode).json(message);
+});
+
+app.put('/v1/tipoproduto/:id', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const headerContentType = request.headers['content-type'];
+
+  if (headerContentType === 'application/json') {
+    const dadosBody = request.body;
+
+    if (JSON.stringify(dadosBody) !== '{}') {
+      const { id } = request.params;
+
+      if (id !== '' && id !== undefined) {
+        dadosBody.id = id;
+
+        const novoTipoProduto = await controllerCategoria.atualizarTipoProduto(dadosBody);
+
+        statusCode = novoTipoProduto.status;
+        message = novoTipoProduto.message;
+      } else {
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+      }
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.EMPTY_BODY;
+    }
+  } else {
+    statusCode = 415;
+    message = MESSAGE_ERROR.CONTENT_TYPE;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+// ###################
+
+app.get('/v1/tipopizza/:id', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const dadosTipoPizza = await controllerCategoria.buscarTipoPizza(id);
+
+    if (dadosTipoPizza) {
+      statusCode = 200;
+      message = dadosTipoPizza;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.NOT_FOUND_BD;
+    }
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.REQUIRED_ID;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.get('/v1/tipopizzas', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+
+  const dadosTipoPizzas = await controllerCategoria.listarTiposPizzas();
+
+  if (dadosTipoPizzas) {
+    statusCode = 200;
+    message = dadosTipoPizzas;
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.NOT_FOUND_BD;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.delete('/v1/tipopizza/:id', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const deletarTipoPizza = controllerCategoria.deletarTipoPizza(id);
+
+    statusCode = deletarTipoPizza.status;
+    message = deletarTipoPizza.message;
+  } else {
+    statusCode = 400;
+    message = MESSAGE_ERROR.REQUIRED_ID;
+  }
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.post('/v1/tipopizza', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const headerContentType = request.headers['content-type'];
+
+  if (headerContentType === 'application/json') {
+    const dadosBody = request.body;
+
+    if (JSON.stringify(dadosBody) !== '{}') {
+      const novoTipoPizza = await controllerCategoria.novoTipoPizza(dadosBody);
+
+      statusCode = novoTipoPizza.status;
+      message = novoTipoPizza.message;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.EMPTY_BODY;
+    }
+  } else {
+    statusCode = 415;
+    message = MESSAGE_ERROR.CONTENT_TYPE;
+  }
+
+  response.status(statusCode).json(message);
+});
+
+app.put('/v1/tipopizza/:id', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const headerContentType = request.headers['content-type'];
+
+  if (headerContentType === 'application/json') {
+    const dadosBody = request.body;
+
+    if (JSON.stringify(dadosBody) !== '{}') {
+      const { id } = request.params;
+
+      if (id !== '' && id !== undefined) {
+        dadosBody.id = id;
+
+        const novoTipoPizza = await controllerCategoria.atualizarTipoPizza(dadosBody);
+
+        statusCode = novoTipoPizza.status;
+        message = novoTipoPizza.message;
+      } else {
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+      }
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.EMPTY_BODY;
+    }
+  } else {
+    statusCode = 415;
+    message = MESSAGE_ERROR.CONTENT_TYPE;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+
+// ###################################
+
+app.get('/v1/tipobebida/:id', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const dadosTipoBebida = await controllerCategoria.buscarTipoBebida(id);
+
+    if (dadosTipoBebida) {
+      statusCode = 200;
+      message = dadosTipoBebida;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.NOT_FOUND_BD;
+    }
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.REQUIRED_ID;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.get('/v1/tipobebidas', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+
+  const dadosTipoBebidas = await controllerCategoria.listarTiposBebidas();
+
+  if (dadosTipoBebidas) {
+    statusCode = 200;
+    message = dadosTipoBebidas;
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.NOT_FOUND_BD;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.delete('/v1/tipobebida/:id', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const deletarTipoBebida = controllerCategoria.deletarTipoBebida(id);
+
+    statusCode = deletarTipoBebida.status;
+    message = deletarTipoBebida.message;
+  } else {
+    statusCode = 400;
+    message = MESSAGE_ERROR.REQUIRED_ID;
+  }
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.post('/v1/tipobebida', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const headerContentType = request.headers['content-type'];
+
+  if (headerContentType === 'application/json') {
+    const dadosBody = request.body;
+
+    if (JSON.stringify(dadosBody) !== '{}') {
+      const novoTipoBebida = await controllerCategoria.novoTipoBebida(dadosBody);
+
+      statusCode = novoTipoBebida.status;
+      message = novoTipoBebida.message;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.EMPTY_BODY;
+    }
+  } else {
+    statusCode = 415;
+    message = MESSAGE_ERROR.CONTENT_TYPE;
+  }
+
+  response.status(statusCode).json(message);
+});
+
+app.put('/v1/tipobebida/:id', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const headerContentType = request.headers['content-type'];
+
+  if (headerContentType === 'application/json') {
+    const dadosBody = request.body;
+
+    if (JSON.stringify(dadosBody) !== '{}') {
+      const { id } = request.params;
+
+      if (id !== '' && id !== undefined) {
+        dadosBody.id = id;
+
+        const novoTipoBebida = await controllerCategoria.atualizarTipoBebida(dadosBody);
+
+        statusCode = novoTipoBebida.status;
+        message = novoTipoBebida.message;
+      } else {
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+      }
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.EMPTY_BODY;
+    }
+  } else {
+    statusCode = 415;
+    message = MESSAGE_ERROR.CONTENT_TYPE;
+  }
+
   response.status(statusCode);
   response.json(message);
 });
