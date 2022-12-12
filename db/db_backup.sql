@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `db_senailicious` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `db_senailicious`;
--- MySQL dump 10.13  Distrib 8.0.28, for macos11 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
 --
 -- Host: localhost    Database: db_senailicious
 -- ------------------------------------------------------
--- Server version	8.0.27
+-- Server version	8.0.28
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,36 +16,6 @@ USE `db_senailicious`;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `_prisma_migrations`
---
-
-DROP TABLE IF EXISTS `_prisma_migrations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `_prisma_migrations` (
-  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `checksum` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `finished_at` datetime(3) DEFAULT NULL,
-  `migration_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `logs` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  `rolled_back_at` datetime(3) DEFAULT NULL,
-  `started_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-  `applied_steps_count` int unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `_prisma_migrations`
---
-
-LOCK TABLES `_prisma_migrations` WRITE;
-/*!40000 ALTER TABLE `_prisma_migrations` DISABLE KEYS */;
-INSERT INTO `_prisma_migrations` VALUES ('986582df-bbc6-4050-95e3-19b7673342d1','eafd09beefd5930f8cdc68cc79f81fc24e7a45fc07f31f6ed977f4946122f5dc','2022-11-30 13:34:34.531','20221130133434_conectando_o_banco',NULL,NULL,'2022-11-30 13:34:34.522',1);
-/*!40000 ALTER TABLE `_prisma_migrations` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tbl_administrador`
@@ -61,7 +31,7 @@ CREATE TABLE `tbl_administrador` (
   `nome` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +40,6 @@ CREATE TABLE `tbl_administrador` (
 
 LOCK TABLES `tbl_administrador` WRITE;
 /*!40000 ALTER TABLE `tbl_administrador` DISABLE KEYS */;
-INSERT INTO `tbl_administrador` VALUES (1,'root.senailicious@gmail.com','12202345','root');
 /*!40000 ALTER TABLE `tbl_administrador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,15 +52,16 @@ DROP TABLE IF EXISTS `tbl_bebida`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tbl_bebida` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `id_produto` int NOT NULL,
+  `nome` varchar(45) NOT NULL,
+  `preco` decimal(4,2) NOT NULL,
+  `tamanho` varchar(45) NOT NULL,
+  `imagem` varchar(300) NOT NULL,
   `id_tipo_bebida` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  KEY `FK_produto_bebida` (`id_produto`),
   KEY `FK_tipo_bebida_bebida` (`id_tipo_bebida`),
-  CONSTRAINT `FK_produto_bebida` FOREIGN KEY (`id_produto`) REFERENCES `tbl_produto` (`id`),
   CONSTRAINT `FK_tipo_bebida_bebida` FOREIGN KEY (`id_tipo_bebida`) REFERENCES `tbl_tipo_bebida` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,7 +70,7 @@ CREATE TABLE `tbl_bebida` (
 
 LOCK TABLES `tbl_bebida` WRITE;
 /*!40000 ALTER TABLE `tbl_bebida` DISABLE KEYS */;
-INSERT INTO `tbl_bebida` VALUES (1,2,2);
+INSERT INTO `tbl_bebida` VALUES (2,'Suco de Laranja',6.90,'350 ml','https://comeonburger.com.br/wp-content/uploads/2019/12/laranja.jpg',2),(3,'Coca Cola',7.90,'350 ml','https://comeonburger.com.br/wp-content/uploads/2019/12/laranja.jpg',3);
 /*!40000 ALTER TABLE `tbl_bebida` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,7 +86,7 @@ CREATE TABLE `tbl_ingrediente` (
   `nome` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,8 +95,68 @@ CREATE TABLE `tbl_ingrediente` (
 
 LOCK TABLES `tbl_ingrediente` WRITE;
 /*!40000 ALTER TABLE `tbl_ingrediente` DISABLE KEYS */;
-INSERT INTO `tbl_ingrediente` VALUES (1,'Calabresa'),(2,'Cebola'),(3,'Azeitona'),(4,'Água'),(10,'Tomate');
+INSERT INTO `tbl_ingrediente` VALUES (1,'Calabresa'),(2,'Cebola'),(3,'Azeitona'),(4,'Água'),(5,'Laranja'),(6,'Açucar'),(7,'Morango'),(8,'Chocolate');
 /*!40000 ALTER TABLE `tbl_ingrediente` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_ingrediente_bebida`
+--
+
+DROP TABLE IF EXISTS `tbl_ingrediente_bebida`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tbl_ingrediente_bebida` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_bebida` int NOT NULL,
+  `id_ingrediente` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `FK_bebida_bebida_ingrediente` (`id_bebida`),
+  KEY `FK_ingrediente_bebida_ingrediente` (`id_ingrediente`),
+  CONSTRAINT `FK_bebida_bebida_ingrediente` FOREIGN KEY (`id_bebida`) REFERENCES `tbl_bebida` (`id`),
+  CONSTRAINT `FK_ingrediente_bebida_ingrediente` FOREIGN KEY (`id_ingrediente`) REFERENCES `tbl_ingrediente` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_ingrediente_bebida`
+--
+
+LOCK TABLES `tbl_ingrediente_bebida` WRITE;
+/*!40000 ALTER TABLE `tbl_ingrediente_bebida` DISABLE KEYS */;
+INSERT INTO `tbl_ingrediente_bebida` VALUES (1,2,4),(2,2,5),(3,2,6);
+/*!40000 ALTER TABLE `tbl_ingrediente_bebida` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_ingrediente_pizza`
+--
+
+DROP TABLE IF EXISTS `tbl_ingrediente_pizza`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tbl_ingrediente_pizza` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_pizza` int NOT NULL,
+  `id_ingrediente` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `FK_pizza_pizza_ingrediente` (`id_pizza`),
+  KEY `FK_ingrediente_pizza_ingrediente` (`id_ingrediente`),
+  CONSTRAINT `FK_ingrediente_pizza_ingrediente` FOREIGN KEY (`id_ingrediente`) REFERENCES `tbl_ingrediente` (`id`),
+  CONSTRAINT `FK_pizza_pizza_ingrediente` FOREIGN KEY (`id_pizza`) REFERENCES `tbl_pizza` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_ingrediente_pizza`
+--
+
+LOCK TABLES `tbl_ingrediente_pizza` WRITE;
+/*!40000 ALTER TABLE `tbl_ingrediente_pizza` DISABLE KEYS */;
+INSERT INTO `tbl_ingrediente_pizza` VALUES (4,2,1),(5,2,2),(6,2,3),(10,3,7),(11,3,8);
+/*!40000 ALTER TABLE `tbl_ingrediente_pizza` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -148,7 +178,7 @@ CREATE TABLE `tbl_mensagem` (
   UNIQUE KEY `id` (`id`),
   KEY `FK_tipo_mensagem_mensagem` (`id_tipo_mensagem`),
   CONSTRAINT `FK_tipo_mensagem_mensagem` FOREIGN KEY (`id_tipo_mensagem`) REFERENCES `tbl_tipo_mensagem` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,7 +187,7 @@ CREATE TABLE `tbl_mensagem` (
 
 LOCK TABLES `tbl_mensagem` WRITE;
 /*!40000 ALTER TABLE `tbl_mensagem` DISABLE KEYS */;
-INSERT INTO `tbl_mensagem` VALUES (1,'Larissa','larissanunes@senai.com','35993326','11 986271996','Sugiro que coloquem mais calabresa na pizza de calabresa.',1),(2,'Matheus','matheusalves@senai.com','37889056','11 994600546','Sugiro que coloquem mais recheio na pizza de mussarela.',1);
+INSERT INTO `tbl_mensagem` VALUES (1,'Larissa','larissanunes@senai.com','35993326','11 986271996','Sugiro que coloquem mais calabresa na pizza de calabresa.',1);
 /*!40000 ALTER TABLE `tbl_mensagem` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,16 +200,18 @@ DROP TABLE IF EXISTS `tbl_pizza`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tbl_pizza` (
   `id` int NOT NULL AUTO_INCREMENT,
+  `nome` varchar(45) NOT NULL,
+  `preco` decimal(4,2) NOT NULL,
+  `tamanho` varchar(45) NOT NULL,
+  `imagem` varchar(300) NOT NULL,
+  `desconto` int NOT NULL,
   `quantidade_vezes_favorito` int NOT NULL,
-  `id_produto` int NOT NULL,
   `id_tipo_pizza` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
-  KEY `FK_produto_pizza` (`id_produto`),
   KEY `FK_tipo_pizza_pizza` (`id_tipo_pizza`),
-  CONSTRAINT `FK_produto_pizza` FOREIGN KEY (`id_produto`) REFERENCES `tbl_produto` (`id`),
   CONSTRAINT `FK_tipo_pizza_pizza` FOREIGN KEY (`id_tipo_pizza`) REFERENCES `tbl_tipo_pizza` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,70 +220,8 @@ CREATE TABLE `tbl_pizza` (
 
 LOCK TABLES `tbl_pizza` WRITE;
 /*!40000 ALTER TABLE `tbl_pizza` DISABLE KEYS */;
-INSERT INTO `tbl_pizza` VALUES (1,0,1,1);
+INSERT INTO `tbl_pizza` VALUES (2,'Calabresa',39.90,'Grande','https://img.freepik.com/fotos-premium/pizza-a-brasileira-com-queijo-mussarela-linguica-calabresa-e-cebola-vista-do-topo_261158-2018.jpg?w=2000',0,0,1),(3,'Morango com chocolate',59.90,'Grande','https://i.pinimg.com/originals/c4/85/c4/c485c4c00f738d6329c40c8a8ef72997.jpg',0,0,2);
 /*!40000 ALTER TABLE `tbl_pizza` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tbl_produto`
---
-
-DROP TABLE IF EXISTS `tbl_produto`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tbl_produto` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(45) NOT NULL,
-  `imagem` varchar(200) DEFAULT NULL,
-  `tamanho` varchar(45) DEFAULT NULL,
-  `preco` decimal(4,2) DEFAULT NULL,
-  `desconto` int DEFAULT NULL,
-  `id_tipo_produto` int NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK_tipo_produto_produto` (`id_tipo_produto`),
-  CONSTRAINT `FK_tipo_produto_produto` FOREIGN KEY (`id_tipo_produto`) REFERENCES `tbl_tipo_produto` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tbl_produto`
---
-
-LOCK TABLES `tbl_produto` WRITE;
-/*!40000 ALTER TABLE `tbl_produto` DISABLE KEYS */;
-INSERT INTO `tbl_produto` VALUES (1,'Calabresa','https://img.freepik.com/fotos-premium/pizza-a-brasileira-com-queijo-mussarela-linguica-calabresa-e-cebola-vista-do-topo_261158-2018.jpg?w=2000','Grande',39.90,0,1),(2,'Suco de laranja','https://riomarfortalezaonline.com.br/fortalezashopping/2020/05/Suco_de_laranja_cheppitos.jpg','400 ml',6.00,0,2),(3,'Mussarela','https://pastapizza.com.br/wp-content/uploads/2017/07/Pizza-Pizzaria-Forno-Forza-Express.jpg','Grande',39.90,0,1),(8,'Coca-Cola','https://www.imagensempng.com.br/wp-content/uploads/2022/01/2442.png','355 ml',7.00,0,2);
-/*!40000 ALTER TABLE `tbl_produto` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `tbl_produto_ingrediente`
---
-
-DROP TABLE IF EXISTS `tbl_produto_ingrediente`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tbl_produto_ingrediente` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `id_tipo_produto` int NOT NULL,
-  `id_ingrediente` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK_tipo_produto_produto_ingrediente` (`id_tipo_produto`),
-  KEY `FK_ingrediente_produto_ingrediente` (`id_ingrediente`),
-  CONSTRAINT `FK_ingrediente_produto_ingrediente` FOREIGN KEY (`id_ingrediente`) REFERENCES `tbl_ingrediente` (`id`),
-  CONSTRAINT `FK_tipo_produto_produto_ingrediente` FOREIGN KEY (`id_tipo_produto`) REFERENCES `tbl_tipo_produto` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tbl_produto_ingrediente`
---
-
-LOCK TABLES `tbl_produto_ingrediente` WRITE;
-/*!40000 ALTER TABLE `tbl_produto_ingrediente` DISABLE KEYS */;
-INSERT INTO `tbl_produto_ingrediente` VALUES (1,1,1),(2,1,2),(3,1,3),(4,2,4);
-/*!40000 ALTER TABLE `tbl_produto_ingrediente` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -328,54 +298,6 @@ LOCK TABLES `tbl_tipo_pizza` WRITE;
 INSERT INTO `tbl_tipo_pizza` VALUES (1,'Salgada'),(2,'Doce');
 /*!40000 ALTER TABLE `tbl_tipo_pizza` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `tbl_tipo_produto`
---
-
-DROP TABLE IF EXISTS `tbl_tipo_produto`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tbl_tipo_produto` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `tipo` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tbl_tipo_produto`
---
-
-LOCK TABLES `tbl_tipo_produto` WRITE;
-/*!40000 ALTER TABLE `tbl_tipo_produto` DISABLE KEYS */;
-INSERT INTO `tbl_tipo_produto` VALUES (1,'Pizza'),(2,'Bebida');
-/*!40000 ALTER TABLE `tbl_tipo_produto` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `teste`
---
-
-DROP TABLE IF EXISTS `teste`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `teste` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nome` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  UNIQUE KEY `teste_id_key` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `teste`
---
-
-LOCK TABLES `teste` WRITE;
-/*!40000 ALTER TABLE `teste` DISABLE KEYS */;
-/*!40000 ALTER TABLE `teste` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -386,4 +308,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-12  9:16:42
+-- Dump completed on 2022-12-12 19:14:00
