@@ -223,7 +223,8 @@ const insertTipoProduto = async (tipoProduto) => {
 
   const selectAllTiposBebidas = async () => {
     const sql = `select cast(id as float) as 
-            tipo
+        id,
+        tipo
       from tbl_tipo_bebida order by id desc`;
   
     const rsTipoBebidas = await prisma.$queryRawUnsafe(sql);
@@ -235,8 +236,9 @@ const insertTipoProduto = async (tipoProduto) => {
   };
 
   const selectByIdTipoBebida = async (id) => {
-    const sql = `select cast(id as float) as 
-         tipo
+    const sql = `select cast(id as float) as
+        id, 
+        tipo
       from tbl_tipo_bebida where id = ${id}`;
   
     const rsTipoBebida = await prisma.$queryRawUnsafe(sql);

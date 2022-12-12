@@ -52,7 +52,7 @@ const atualizarTipoProduto = (tipoProduto) => {
     return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
   }
 
-  const result = tipoProduto.updateTipoProduto(tipoProduto);
+  const result = categoriaDao.updateTipoProduto(tipoProduto);
 
   if (result) {
     return { status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM };
@@ -70,7 +70,77 @@ const listarTiposProdutos = async () => {
 };
 // ################################################################
 
-const buscarTipoPizza = async (id) => {
+const buscarTipoBebida = async (id) => {
+    const dadosTipoBebidaJSON = {};
+  
+    if (id === '' || id === undefined) {
+      return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID };
+    }
+    const dadosTipoBebida = await categoriaDao.selectByIdTipoBebida(id);
+  
+    if (dadosTipoBebida) {
+      dadosTipoBebidaJSON.tipoBebida = dadosTipoBebida;
+      return dadosTipoBebidaJSON;
+    }
+    return false;
+  };
+  
+  const novoTipoBebida = async (tipoBebida) => {
+    if (tipoBebida.tipo === '') {
+      return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
+    }
+    const result = await categoriaDao.insertTipoBebida(tipoBebida);
+  
+    if (result) {
+      return { status: 201, message: MESSAGE_SUCESS.INSERT_ITEM };
+    }
+    return { status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB };
+  };
+  
+  const deletarTipoBebida = (id) => {
+    if (id === '' || id === undefined) {
+      return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID };
+    }
+    const tipoBebida = buscarTipoBebida(id);
+    if (tipoBebida) {
+      const result = categoriaDao.deleteTipoBebida(id);
+  
+      if (result) {
+        return { status: 201, message: MESSAGE_SUCESS.DELETE_ITEM };
+      }
+      return { status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB };
+    }
+    return { status: 404, message: MESSAGE_ERROR.NOT_FOUND_BD };
+  };
+  
+  const atualizarTipoBebida = (tipoBebida) => {
+    if (tipoBebida.id === '' || tipoBebida.id === undefined) {
+      return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID };
+    }
+    if (tipoBebida.tipo === '') {
+      return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
+    }
+  
+    const result = categoriaDao.updateTipoBebida(tipoBebida);
+  
+    if (result) {
+      return { status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM };
+    }
+    return { status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB };
+  };
+  
+  const listarTiposBebidas = async () => {
+    const tipoBebidas = await categoriaDao.selectAllTiposBebidas();
+  
+    if (tipoBebidas) {
+      return tipoBebidas;
+    }
+    return false;
+  };
+
+// #########################################################################################
+
+  const buscarTipoPizza = async (id) => {
     const dadosTipoPizzaJSON = {};
   
     if (id === '' || id === undefined) {
@@ -121,7 +191,7 @@ const buscarTipoPizza = async (id) => {
       return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
     }
   
-    const result = tipoPizza.updateTipoPizza(tipoPizza);
+    const result = categoriaDao.updateTipoPizza(tipoPizza);
   
     if (result) {
       return { status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM };
@@ -139,6 +209,8 @@ const buscarTipoPizza = async (id) => {
   };
 
 
+  
+
 const controllerCategoria = {
   buscarTipoProduto,
   listarTiposProdutos,
@@ -149,7 +221,12 @@ const controllerCategoria = {
   listarTiposPizzas,
   atualizarTipoPizza,
   deletarTipoPizza,
-  novoTipoPizza  
+  novoTipoPizza,
+  buscarTipoBebida,
+  listarTiposBebidas,
+  atualizarTipoBebida,
+  deletarTipoBebida,
+  novoTipoBebida  
 };
 
 export default controllerCategoria;

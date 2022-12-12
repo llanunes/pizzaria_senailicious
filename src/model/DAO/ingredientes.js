@@ -58,15 +58,7 @@ const updateIngrediente = async (ingrediente) => {
 
 const deleteIngrediente = async (id) => {
   try {
-<<<<<<< HEAD
-    const sql = `
-    DELETE FROM tbl_produto_ingrediente WHERE tbl_produto_ingrediente.id_ingrediente = ${id};
-    DELETE FROM tbl_ingrediente WHERE tbl_ingrediente.id = ${id};`;
-=======
     const sql = `DELETE FROM tbl_ingrediente WHERE tbl_ingrediente.id = ${id};`;
-
-    console.log(sql);
->>>>>>> 07f0cedc894629f5d2500e5564575acaf992c46b
 
     const result = await prisma.$executeRawUnsafe(sql);
     if (result) {
@@ -74,7 +66,6 @@ const deleteIngrediente = async (id) => {
     }
     return false;
   } catch (error) {
-    console.log(error);
     return false;
   }
 };
