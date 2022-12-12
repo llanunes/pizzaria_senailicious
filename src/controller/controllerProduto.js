@@ -7,7 +7,7 @@
 * Data modificação: 01/12/2022
 ************************************************************************************************* */
 
-import { MESSAGE_ERROR, MESSAGE_SUCESS } from '../modulo/config.js';
+import { MESSAGE_ERROR, MESSAGE_SUCESS } from '../module/config.js';
 import produtoDao from '../model/DAO/produtos.js';
 
 const buscarProduto = async (id) => {
@@ -26,11 +26,10 @@ const buscarProduto = async (id) => {
 };
 
 const novoProduto = async (produto) => {
-  if (produto.nome === '' || produto.imagem === '' || produto.tamanho === '' || produto.preco === '' || produto.desconto === null || produto.id_tipo_produto === '') {
+  if (produto.nome === '' || produto.imagem === '' || produto.tamanho === '' || produto.preco === '' || produto.desconto === '' || produto.id_tipo_produto === '') {
     return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
   }
-  const novoProduto = await produtoDao.insertProduto(produto);
-  const result = novoProduto;
+  const result = await produtoDao.insertProduto(produto);
 
   if (result) {
     return { status: 201, message: MESSAGE_SUCESS.INSERT_ITEM };

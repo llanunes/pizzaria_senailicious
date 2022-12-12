@@ -25,12 +25,9 @@ import { prisma } from '../utils/prisma-instance.js';
 
 const insertIngrediente = async (ingrediente) => {
   try {
-    const sql = `insert into tbl_ingrediente (
-            nome
-        )
-        values (
-            '${ingrediente.nome}'
-            )`;
+    const sql = `
+    INSERT INTO tbl_ingrediente (nome)
+    VALUES ('${ingrediente.nome}')`;
 
     const result = await prisma.$executeRawUnsafe(sql);
     if (result) {
@@ -44,10 +41,9 @@ const insertIngrediente = async (ingrediente) => {
 
 const updateIngrediente = async (ingrediente) => {
   try {
-    const sql = `update tbl_ingrediente set
-         nome = '${ingrediente.nome}',
-         
-         where id = '${ingrediente.id}'`;
+    const sql = `UPDATE tbl_ingrediente SET
+        nome = '${ingrediente.nome}'
+        WHERE id = ${ingrediente.id}`;
 
     const result = await prisma.$executeRawUnsafe(sql);
 
@@ -62,8 +58,9 @@ const updateIngrediente = async (ingrediente) => {
 
 const deleteIngrediente = async (id) => {
   try {
-    const sql = `delete from tbl_ingrediente 
-        where id = '${id}'`;
+    const sql = `
+    DELETE FROM tbl_tipo_produto_ingrediente WHERE tbl_tipo_produto_ingrediente.id_ingrediente = ${id};
+    DELETE FROM tbl_ingrediente WHERE tbl_ingrediente.id = ${id};`;
 
     const result = await prisma.$executeRawUnsafe(sql);
     if (result) {

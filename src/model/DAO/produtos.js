@@ -38,7 +38,7 @@ const insertProduto = async (produto) => {
             '${produto.imagem}',
             '${produto.tamanho}',
             '${produto.preco}',
-            '${produto.desconto}',
+            ${produto.desconto},
             '${produto.id_tipo_produto}'
             )`;
     const result = await prisma.$executeRawUnsafe(sql);
@@ -59,7 +59,7 @@ const updateProduto = async (produto) => {
             imagem = '${produto.imagem}',
             tamanho = '${produto.tamanho}', 
             preco = '${produto.preco}', 
-            desconto = '${produto.desconto}',
+            desconto = '${produto.desconto}'
          
          where id = '${produto.id}'`;
 
@@ -70,7 +70,6 @@ const updateProduto = async (produto) => {
     }
     return false;
   } catch (error) {
-    console.log(error);
     return false;
   }
 };

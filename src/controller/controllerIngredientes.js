@@ -7,7 +7,7 @@
 * Data modificação: 01/12/2022
 ************************************************************************************************* */
 
-import { MESSAGE_ERROR, MESSAGE_SUCESS } from '../modulo/config.js';
+import { MESSAGE_ERROR, MESSAGE_SUCESS } from '../module/config.js';
 import ingredienteDao from '../model/DAO/ingredientes.js';
 
 const buscarIngrediente = async (id) => {
@@ -26,12 +26,10 @@ const buscarIngrediente = async (id) => {
 };
 
 const novoIngrediente = async (ingrediente) => {
-  if (ingrediente.nome === '') {
+  if (ingrediente.nome === '' || ingrediente.nome === undefined || ingrediente.nome === null) {
     return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
   }
-  const novoIngrediente = await ingredienteDao.insertIngrediente(ingrediente);
-
-  const result = novoIngrediente;
+  const result = await ingredienteDao.insertIngrediente(ingrediente);
 
   if (result) {
     return { status: 201, message: MESSAGE_SUCESS.INSERT_ITEM };
@@ -64,11 +62,10 @@ const atualizarIngrediente = (ingrediente) => {
     return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
   }
 
-  const atualizarIngrediente = ingredienteDao.updateIngrediente(ingrediente);
-  const result = atualizarIngrediente;
+  const result = ingredienteDao.updateIngrediente(ingrediente);
 
   if (result) {
-    return { status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM };
+    return { status: 200, message: MESSAGE_SUCESS.UPDATE_ITEM };
   }
   return { status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB };
 };
