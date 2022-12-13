@@ -18,6 +18,59 @@ USE `db_senailicious`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `_prisma_migrations`
+--
+
+DROP TABLE IF EXISTS `_prisma_migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `_prisma_migrations` (
+  `id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `checksum` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `finished_at` datetime(3) DEFAULT NULL,
+  `migration_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `logs` text COLLATE utf8mb4_unicode_ci,
+  `rolled_back_at` datetime(3) DEFAULT NULL,
+  `started_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `applied_steps_count` int unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `_prisma_migrations`
+--
+
+LOCK TABLES `_prisma_migrations` WRITE;
+/*!40000 ALTER TABLE `_prisma_migrations` DISABLE KEYS */;
+INSERT INTO `_prisma_migrations` VALUES ('2d4473ce-4244-4f5b-bbef-61a62fbb0f5c','b00a5b996384d71055c3ebe9483b4719a582138ac0c33a7de36ed780194f2bc4','2022-12-13 01:14:44.128','20221212222458_alteracoes_no_banco',NULL,NULL,'2022-12-13 01:14:44.099',1),('7ef29e5d-72f3-4fed-b22b-d26dd4cb87eb','c3e25c4056392550fe0b9934762e0f0ef7d8789a3bf93f99c6a6a727137f0ca1','2022-12-13 01:14:44.064','20221207135848_alterando_a_tabela_de_administrador',NULL,NULL,'2022-12-13 01:14:44.051',1),('c5157c86-bc26-4ff2-bcae-f1b2fa58f7ad','aca4afd390fd62c9e21e1efc2c7ce78ac6a8b6c74d9bf881cc879577248acefe','2022-12-13 01:14:44.049','20221130133434_conectando_o_banco',NULL,NULL,'2022-12-13 01:14:44.027',1),('f8ccde1a-f11d-4621-aafb-26914521b1a9','0e7f1705e8e2e4bd6e4091ea0f0a891ae8947e3e95bd60a5978b7502f664ffad','2022-12-13 01:14:44.096','20221211210226_alterando_a_tabela_de_produtos',NULL,NULL,'2022-12-13 01:14:44.067',1);
+/*!40000 ALTER TABLE `_prisma_migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `clear_db`
+--
+
+DROP TABLE IF EXISTS `clear_db`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `clear_db` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `clear_db`
+--
+
+LOCK TABLES `clear_db` WRITE;
+/*!40000 ALTER TABLE `clear_db` DISABLE KEYS */;
+/*!40000 ALTER TABLE `clear_db` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tbl_administrador`
 --
 
@@ -29,9 +82,10 @@ CREATE TABLE `tbl_administrador` (
   `email` varchar(256) NOT NULL,
   `senha` varchar(100) NOT NULL,
   `nome` varchar(100) NOT NULL,
+  `foto` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,6 +94,7 @@ CREATE TABLE `tbl_administrador` (
 
 LOCK TABLES `tbl_administrador` WRITE;
 /*!40000 ALTER TABLE `tbl_administrador` DISABLE KEYS */;
+INSERT INTO `tbl_administrador` VALUES (2,'matheus@gmail.com','321321','matheus','https://i.pinimg.com/736x/34/8e/a4/348ea49f89162a070660dcdebd8e167a.jpg');
 /*!40000 ALTER TABLE `tbl_administrador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,7 +141,7 @@ CREATE TABLE `tbl_ingrediente` (
   `nome` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +150,7 @@ CREATE TABLE `tbl_ingrediente` (
 
 LOCK TABLES `tbl_ingrediente` WRITE;
 /*!40000 ALTER TABLE `tbl_ingrediente` DISABLE KEYS */;
-INSERT INTO `tbl_ingrediente` VALUES (1,'Calabresa'),(2,'Cebola'),(3,'Azeitona'),(4,'Água'),(5,'Laranja'),(6,'Açucar'),(7,'Morango'),(8,'Chocolate');
+INSERT INTO `tbl_ingrediente` VALUES (1,'Calabresa'),(2,'Cebola'),(3,'Azeitona'),(4,'Água'),(5,'Laranja'),(6,'Açucar'),(7,'Morango'),(8,'Chocolate'),(9,'cebolinha');
 /*!40000 ALTER TABLE `tbl_ingrediente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,7 +233,7 @@ CREATE TABLE `tbl_mensagem` (
   UNIQUE KEY `id` (`id`),
   KEY `FK_tipo_mensagem_mensagem` (`id_tipo_mensagem`),
   CONSTRAINT `FK_tipo_mensagem_mensagem` FOREIGN KEY (`id_tipo_mensagem`) REFERENCES `tbl_tipo_mensagem` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -187,7 +242,7 @@ CREATE TABLE `tbl_mensagem` (
 
 LOCK TABLES `tbl_mensagem` WRITE;
 /*!40000 ALTER TABLE `tbl_mensagem` DISABLE KEYS */;
-INSERT INTO `tbl_mensagem` VALUES (1,'Larissa','larissanunes@senai.com','35993326','11 986271996','Sugiro que coloquem mais calabresa na pizza de calabresa.',1);
+INSERT INTO `tbl_mensagem` VALUES (1,'Larissa','larissanunes@senai.com','35993326','11 986271996','Sugiro que coloquem mais calabresa na pizza de calabresa.',1),(4,'string','string','string','string','string',1);
 /*!40000 ALTER TABLE `tbl_mensagem` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,14 +259,14 @@ CREATE TABLE `tbl_pizza` (
   `preco` decimal(4,2) NOT NULL,
   `tamanho` varchar(45) NOT NULL,
   `imagem` varchar(300) NOT NULL,
-  `desconto` int NOT NULL,
   `quantidade_vezes_favorito` int NOT NULL,
   `id_tipo_pizza` int NOT NULL,
+  `desconto` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `FK_tipo_pizza_pizza` (`id_tipo_pizza`),
   CONSTRAINT `FK_tipo_pizza_pizza` FOREIGN KEY (`id_tipo_pizza`) REFERENCES `tbl_tipo_pizza` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -220,7 +275,7 @@ CREATE TABLE `tbl_pizza` (
 
 LOCK TABLES `tbl_pizza` WRITE;
 /*!40000 ALTER TABLE `tbl_pizza` DISABLE KEYS */;
-INSERT INTO `tbl_pizza` VALUES (2,'Calabresa',39.90,'Grande','https://img.freepik.com/fotos-premium/pizza-a-brasileira-com-queijo-mussarela-linguica-calabresa-e-cebola-vista-do-topo_261158-2018.jpg?w=2000',0,0,1),(3,'Morango com chocolate',59.90,'Grande','https://i.pinimg.com/originals/c4/85/c4/c485c4c00f738d6329c40c8a8ef72997.jpg',0,0,2);
+INSERT INTO `tbl_pizza` VALUES (2,'Calabresa',39.90,'Grande','https://img.freepik.com/fotos-premium/pizza-a-brasileira-com-queijo-mussarela-linguica-calabresa-e-cebola-vista-do-topo_261158-2018.jpg?w=2000',0,1,NULL),(3,'Morango com chocolate',59.90,'Grande','https://i.pinimg.com/originals/c4/85/c4/c485c4c00f738d6329c40c8a8ef72997.jpg',0,2,NULL),(4,'com chocolate',50.00,'Grande','https://master-b2b-img.azureedge.net/product/1785-cerveja-heineken-lager-beer-cc-600ml-g.jpg',0,1,NULL);
 /*!40000 ALTER TABLE `tbl_pizza` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,7 +341,7 @@ CREATE TABLE `tbl_tipo_pizza` (
   `tipo` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -295,7 +350,7 @@ CREATE TABLE `tbl_tipo_pizza` (
 
 LOCK TABLES `tbl_tipo_pizza` WRITE;
 /*!40000 ALTER TABLE `tbl_tipo_pizza` DISABLE KEYS */;
-INSERT INTO `tbl_tipo_pizza` VALUES (1,'Salgada'),(2,'Doce');
+INSERT INTO `tbl_tipo_pizza` VALUES (1,'undefined'),(2,'Doce');
 /*!40000 ALTER TABLE `tbl_tipo_pizza` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -308,4 +363,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-12-12 19:14:00
+-- Dump completed on 2022-12-13  6:12:21
