@@ -49,7 +49,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/produto'
+                  $ref: '#/components/schemas/pizza'
         '400':
           description: O id do registro é obrigatório neste tipo de requisição
         '404':
@@ -123,10 +123,3 @@ components:
           type: string
         id_tipo_mensagem:
           type: integer
-  requestBodies:
-    produto:
-      description: Objeto que deve ser enviado no Body das requisicoes
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/produto'
