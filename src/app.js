@@ -27,11 +27,13 @@ import { MESSAGE_ERROR } from './module/config.js';
 import controllerIngredientes from './controller/controllerIngredientes.js';
 import controllerAdministrador from './controller/controllerAdministrador.js';
 import controllerCategoria from './controller/controllerCategoria.js';
+import controllerIngredientesBebida from './controller/controllerIngredienteBebida.js';
 import controllerMensagem from './controller/controllerMensagem.js';
 import { createJwt, validateJwt } from './middlewares/jwt.js';
 import verificarLoginAdmin from './middlewares/verificarLoginAdmin.js';
 import controllerPizza from './controller/controllerPizza.js';
 import controllerBebida from './controller/controllerBebida.js';
+import controllerIngredientesPizza from './controller/controllerIngredientePizza.js';
 
 const app = express();
 
@@ -552,7 +554,7 @@ app.post('/v1/login/admin', cors(), async (request, response) => {
 
       response.status(statusCode).json({ data: message });
     } else {
-      response.status(404).json({ message: 'Não achamos registros no banco' });
+      response.status(404).json({ message: MESSAGE_ERROR.NOT_FOUND_BD });
     }
   }
 });
@@ -921,6 +923,253 @@ app.put('/v1/tipobebida/:id', cors(), async (request, response) => {
 
   response.status(statusCode);
   response.json(message);
+});
+
+// ########################## ENDPOINTS PARA INGREDIENTES DA PIZZA ##########################
+
+app.get('/v1/pizzas/ingredientes', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+
+  const dadosIngredientePizza = await controllerIngredientesPizza.listarIngredientesPizzas();
+
+  if (dadosIngredientePizza) {
+    statusCode = 200;
+    message = { ingredientes: dadosIngredientePizza };
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.NOT_FOUND_BD;
+  }
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.get('/v1/ingrediente/pizza/:id', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const dadosIngredientePizza = await controllerIngredientesPizza.buscarIngredientePizza(id);
+
+    if (dadosIngredientePizza) {
+      statusCode = 200;
+      message = dadosIngredientePizza;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.NOT_FOUND_BD;
+    }
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.INTERNAL_ERROR_DB;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.post('/v1/ingrediente/pizza/:id', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const headerContentType = request.headers['content-type'];
+
+  if (headerContentType === 'application/json') {
+    const dadosBody = request.body;
+
+    if (JSON.stringify(dadosBody) !== '{}') {
+      // eslint-disable-next-line max-len
+      const novoIngredientePizza = await controllerIngredientesPizza.novoIngredientePizza(dadosBody);
+
+      statusCode = novoIngredientePizza.status;
+      message = novoIngredientePizza.message;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.EMPTY_BODY;
+    }
+  } else {
+    statusCode = 415;
+    message = MESSAGE_ERROR.CONTENT_TYPE;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.put('/v1/ingrediente/pizza/:id', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const headerContentType = request.headers['content-type'];
+
+  if (headerContentType === 'application/json') {
+    const dadosBody = request.body;
+
+    if (JSON.stringify(dadosBody) !== '{}') {
+      const { id } = request.params;
+
+      if (id !== '' && id !== undefined) {
+        dadosBody.id = id;
+
+        // eslint-disable-next-line max-len
+        const novoIngredientePizza = await controllerIngredientesPizza.atualizarIngredientePizza(dadosBody);
+
+        statusCode = novoIngredientePizza.status;
+        message = novoIngredientePizza.message;
+      } else {
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+      }
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.EMPTY_BODY;
+    }
+  } else {
+    statusCode = 415;
+    message = MESSAGE_ERROR.CONTENT_TYPE;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.delete('/v1/ingrediente/pizza/:id', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const deletarIngredientePizza = await controllerIngredientesPizza.deletarIngredientePizza(id);
+
+    statusCode = deletarIngredientePizza.status;
+    message = deletarIngredientePizza.message;
+  } else {
+    statusCode = 400;
+    message = MESSAGE_ERROR.REQUIRED_ID;
+  }
+  response.status(statusCode).json(message);
+});
+
+// ################################################################
+
+app.get('/v1/ingredientes/bebida', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+
+  const dadosIngrediente = await controllerIngredientes.listarIngredientes();
+
+  if (dadosIngrediente) {
+    statusCode = 200;
+    message = { ingredientes: dadosIngrediente };
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.NOT_FOUND_BD;
+  }
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.get('/v1/ingrediente/bebida/:id', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    const dadosIngredienteBebida = await controllerIngredientesBebida.buscarIngredienteBebida(id);
+
+    if (dadosIngredienteBebida) {
+      statusCode = 200;
+      message = dadosIngredienteBebida;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.NOT_FOUND_BD;
+    }
+  } else {
+    statusCode = 404;
+    message = MESSAGE_ERROR.INTERNAL_ERROR_DB;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.post('/v1/ingrediente/bebida', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const headerContentType = request.headers['content-type'];
+
+  if (headerContentType === 'application/json') {
+    const dadosBody = request.body;
+
+    if (JSON.stringify(dadosBody) !== '{}') {
+      // eslint-disable-next-line max-len
+      const novoIngredienteBebida = await controllerIngredientesBebida.novoIngredienteBebida(dadosBody);
+
+      statusCode = novoIngredienteBebida.status;
+      message = novoIngredienteBebida.message;
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.EMPTY_BODY;
+    }
+  } else {
+    statusCode = 415;
+    message = MESSAGE_ERROR.CONTENT_TYPE;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.put('/v1/ingrediente/bebida/:id', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const headerContentType = request.headers['content-type'];
+
+  if (headerContentType === 'application/json') {
+    const dadosBody = request.body;
+
+    if (JSON.stringify(dadosBody) !== '{}') {
+      const { id } = request.params;
+
+      if (id !== '' && id !== undefined) {
+        dadosBody.id = id;
+
+        // eslint-disable-next-line max-len
+        const novoIngredienteBebida = await controllerIngredientesBebida.atualizarIngredienteBebida(dadosBody);
+
+        statusCode = novoIngredienteBebida.status;
+        message = novoIngredienteBebida.message;
+      } else {
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+      }
+    } else {
+      statusCode = 400;
+      message = MESSAGE_ERROR.EMPTY_BODY;
+    }
+  } else {
+    statusCode = 415;
+    message = MESSAGE_ERROR.CONTENT_TYPE;
+  }
+
+  response.status(statusCode);
+  response.json(message);
+});
+
+app.delete('/v1/ingrediente/bebida/:id', cors(), async (request, response) => {
+  let statusCode;
+  let message;
+  const { id } = request.params;
+
+  if (id !== '' && id !== undefined) {
+    // eslint-disable-next-line max-len
+    const deletarIngredienteBebida = await controllerIngredientesBebida.deletarIngredienteBebida(id);
+
+    statusCode = deletarIngredienteBebida.status;
+    message = deletarIngredienteBebida.message;
+  } else {
+    statusCode = 400;
+    message = MESSAGE_ERROR.REQUIRED_ID;
+  }
+  response.status(statusCode).json(message);
 });
 
 app.listen(8080, () => {
