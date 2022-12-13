@@ -16,23 +16,23 @@ externalDocs:
 servers:
   - url: http://localhost:8080
 paths:
-  /v1/produtos:
+  /v1/pizzas:
     get:
       tags:
-        - Produto
-      summary: Retorna todos os produtos
-      description: Retorna todos os produtos registrados no sistema
+        - Pizza
+      summary: Retorna todos as pizzas
+      description: Retorna todos as pizzas registradas no sistema
       responses:
         '200':
           description: Sucesso
         '404':
           description: Não foram achados registros no banco
-  /v1/produto/{id}:
+  /v1/pizza/{id}:
     get:
       tags:
-        - Produto
-      summary: Retorna um produto pelo id
-      description: Listagem de um produto específico registrado no sistema
+        - Pizza
+      summary: Retorna uma pizza pelo id
+      description: Listagem de uma pizza específica registrada no sistema
       parameters:
         - name: id
           in: path
@@ -43,15 +43,17 @@ paths:
             format: int64
       responses:
         '200':
-          description: successful operation
+          description: Sucesso
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/produto'
+        '400':
+          description: O id do registro é obrigatório neste tipo de requisição
         '404':
-          description: Not Found
+          description: Não foram encontrados registros no Banco de Dados.
   /v1/mensagem:
     post:
       tags:
@@ -73,7 +75,7 @@ paths:
           description: Content Type errado
 components:
   schemas:
-    produto:
+    pizza:
       required:
         - nome
         - tipo
@@ -119,13 +121,8 @@ components:
           type: string
         mensagem:
           type: string
-        tipo_mensagem:
-          type: object
-          properties:
-            id:
-              type: integer
-            nome:
-              type: string
+        id_tipo_mensagem:
+          type: integer
   requestBodies:
     produto:
       description: Objeto que deve ser enviado no Body das requisicoes
