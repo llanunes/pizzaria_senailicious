@@ -7,8 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model teste {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model clear_db {
+  id   Int     @id @default(autoincrement())
+  name String?
 }

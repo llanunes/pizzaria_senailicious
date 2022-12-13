@@ -43,13 +43,14 @@ const insertPizza = async (pizza) => {
              ${pizza.quantidade_vezes_favorito},
              '${pizza.id_tipo_pizza}'
              )`;
-    const result = await prisma.$executeRawUnsafe(sql);
+             const result = await prisma.$executeRawUnsafe(sql);
 
     if (result) {
       return true;
     }
     return false;
   } catch (error) {
+    console.log(error);
     return false;
   }
 };
@@ -65,6 +66,7 @@ const updatePizza = async (pizza) => {
              desconto = ${pizza.desconto}
           
           WHERE id = ${pizza.id};`;
+          console.log(sql);
 
     const result = await prisma.$executeRawUnsafe(sql);
 
@@ -79,8 +81,8 @@ const updatePizza = async (pizza) => {
 
 const deletePizza = async (id) => {
   try {
-    const sql = `delete from tbl_pizza 
-         where id = '${id}'`;
+    const sql = `DELETE FROM tbl_pizza 
+        WHERE id = ${id}`;
 
     const result = await prisma.$executeRawUnsafe(sql);
     if (result) {
@@ -100,15 +102,16 @@ const selectAllPizzas = async () => {
      tbl_pizza.tamanho,
      tbl_pizza.preco,
      tbl_pizza.desconto,
-     tbl_pizza.quantidade_vezes_favorito
+     tbl_pizza.quantidade_vezes_favorito,
      tbl_tipo_pizza.id AS id_tipo_pizza,
      tbl_tipo_pizza.tipo AS tipo_pizza
      FROM tbl_pizza
-     INNER JOIN tbl_tipo_pizza
-     ON tbl_tipo_pizza.id = tbl_pizza.id_tipo_pizza
-     ORDER BY id DESC;`;
+      INNER JOIN tbl_tipo_pizza
+        ON tbl_tipo_pizza.id = tbl_pizza.id_tipo_pizza
+      ORDER BY tbl_pizza.id DESC;`;
 
   const rsPizzas = await prisma.$queryRawUnsafe(sql);
+
   if (rsPizzas.length > 0) {
     return rsPizzas;
   }
@@ -143,5 +146,5 @@ export default {
   deletePizza,
   selectAllPizzas,
   insertPizza,
-  selectByIdPizza
+  selectByIdPizza,
 };

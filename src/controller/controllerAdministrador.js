@@ -42,7 +42,6 @@ const atualizarAdministrador = async (administrador) => {
     return { status: 400, message: MESSAGE_ERROR.INVALID_EMAIL };
   }
   const result = await administradorDao.updateAdministrador(administrador);
-  console.log(result);
 
   if (result) {
     return { status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM };

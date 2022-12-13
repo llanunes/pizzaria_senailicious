@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable import/extensions */
 /** ************************************************************************************************
 * Objetivo: Arquivo responsável pela manipulação de dados com o BD (insert, update, delet e select)
@@ -48,7 +49,7 @@ const buscarPizza = async (id) => {
 };
 
 const novaPizza = async (pizza) => {
-  if (pizza.nome === '' || pizza.imagem === '' || pizza.tamanho === '' || pizza.preco === '' || pizza.desconto === '' || pizza.id_tipo_pizza === '' || pizza.quantidade_vezes_favorito === '') {
+  if (pizza.nome === '' || pizza.imagem === '' || pizza.tamanho === '' || pizza.preco === '' || pizza.desconto === '' || pizza.tipo === '' || pizza.quantidade_vezes_favorito === '') {
     return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
   }
   const result = await pizzaDao.insertPizza(pizza);
@@ -59,13 +60,14 @@ const novaPizza = async (pizza) => {
   return { status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB };
 };
 
-const deletarPizza = (id) => {
+const deletarPizza = async (id) => {
   if (id === '' || id === undefined) {
     return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID };
   }
-  const pizza = buscarPizza(id);
+  const pizza = await buscarPizza(id);
   if (pizza) {
-    const result = pizzaDao.deletePizza(id);
+    const result = await pizzaDao.deletePizza(id);
+    console.log(result);
 
     if (result) {
       return { status: 201, message: MESSAGE_SUCESS.DELETE_ITEM };
@@ -75,15 +77,15 @@ const deletarPizza = (id) => {
   return { status: 404, message: MESSAGE_ERROR.NOT_FOUND_BD };
 };
 
-const atualizarPizza = (pizza) => {
+const atualizarPizza = async (pizza) => {
   if (pizza.id === '' || pizza.id === undefined) {
     return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID };
   }
-  if (pizza.nome === '' || pizza.imagem === '' || pizza.tamanho === '' || pizza.preco === '' || pizza.desconto === undefined || pizza.id_tipo_pizza === '' || pizza.quantidade_vezes_favorito === '') {
+  if (pizza.nome === '' || pizza.imagem === '' || pizza.tamanho === '' || pizza.preco === '' || pizza.desconto === '' || pizza.id_tipo_pizza === '' || pizza.quantidade_vezes_favorito === '') {
     return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
   }
 
-  const result = pizzaDao.updatePizza(pizza);
+  const result = await pizzaDao.updatePizza(pizza);
 
   if (result) {
     return { status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM };

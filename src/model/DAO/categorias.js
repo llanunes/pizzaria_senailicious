@@ -155,7 +155,7 @@ const selectAllTiposPizzas = async () => {
 const selectByIdTipoPizza = async (id) => {
   const sql = `select cast(id as float) as 
         id,
-         tipo
+        tipo
       from tbl_tipo_pizza where id = ${id}`;
 
   const rsTipoPizza = await prisma.$queryRawUnsafe(sql);

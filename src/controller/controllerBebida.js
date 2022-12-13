@@ -59,13 +59,13 @@ const novaBebida = async (bebida) => {
   return { status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB };
 };
 
-const deletarBebida = (id) => {
+const deletarBebida = async (id) => {
   if (id === '' || id === undefined) {
     return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID };
   }
   const bebida = buscarBebida(id);
   if (bebida) {
-    const result = bebidaDao.deleteBebida(id);
+    const result = await bebidaDao.deleteBebida(id);
 
     if (result) {
       return { status: 201, message: MESSAGE_SUCESS.DELETE_ITEM };
@@ -75,7 +75,7 @@ const deletarBebida = (id) => {
   return { status: 404, message: MESSAGE_ERROR.NOT_FOUND_BD };
 };
 
-const atualizarBebida = (bebida) => {
+const atualizarBebida = async (bebida) => {
   if (bebida.id === '' || bebida.id === undefined) {
     return { status: 400, message: MESSAGE_ERROR.REQUIRED_ID };
   }
@@ -83,7 +83,7 @@ const atualizarBebida = (bebida) => {
     return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
   }
 
-  const result = bebidaDao.updateBebida(bebida);
+  const result = await bebidaDao.updateBebida(bebida);
 
   if (result) {
     return { status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM };

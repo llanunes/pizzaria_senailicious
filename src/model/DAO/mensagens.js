@@ -52,7 +52,7 @@ const insertMensagem = async (mensagem) => {
 
 const updateMensagem = async (mensagem) => {
   try {
-    const sql = `update tbl_mensagem set
+    const sql = `UPDATE tbl_mensagem SET
             nome = '${mensagem.nome}',
             email = '${mensagem.email}',
             telefone = '${mensagem.telefone}', 
@@ -60,7 +60,7 @@ const updateMensagem = async (mensagem) => {
             mensagem = '${mensagem.mensagem}',
             id_tipo_mensagem = '${mensagem.id_tipo_mensagem}'
          
-         where id = '${mensagem.id}'`;
+         WHERE id = ${mensagem.id}`;
 
     const result = await prisma.$executeRawUnsafe(sql);
 
@@ -75,8 +75,8 @@ const updateMensagem = async (mensagem) => {
 
 const deleteMensagem = async (id) => {
   try {
-    const sql = `delete from tbl_mensagem 
-        where id = '${id}'`;
+    const sql = `DELETE FROM tbl_mensagem 
+        WHERE id = ${id}`;
 
     const result = await prisma.$executeRawUnsafe(sql);
     if (result) {
@@ -89,14 +89,20 @@ const deleteMensagem = async (id) => {
 };
 
 const selectAllMensagens = async () => {
-  const sql = `select cast(id as float) as 
-            nome,
-            email,
-            telefone,
-            celular,
-            mensagem,
-            id_tipo_mensagem
-    from tbl_mensagem order by id desc`;
+  const sql = `
+  SELECT CAST(tbl_mensagem.id AS FLOAT) AS
+  id,
+  tbl_mensagem.nome,
+  tbl_mensagem.email,
+  tbl_mensagem.telefone,
+  tbl_mensagem.celular,
+  tbl_mensagem.mensagem,
+  tbl_tipo_mensagem.id AS id_tipo_mensagem,
+  tbl_tipo_mensagem.tipo AS tipo_mensagem
+    FROM tbl_mensagem 
+      INNER JOIN tbl_tipo_mensagem
+        ON tbl_tipo_mensagem.id = tbl_mensagem.id_tipo_mensagem
+    ORDER BY id DESC`;
 
   const rsMensagem = await prisma.$queryRawUnsafe(sql);
 
@@ -107,14 +113,19 @@ const selectAllMensagens = async () => {
 };
 
 const selectByIdMensagem = async (id) => {
-  const sql = `select cast(id as float) as 
-            nome,
-            email,
-            telefone,
-            celular,
-            mensagem,
-            id_tipo_mensagem
-    from tbl_mensagem where id = ${id}`;
+  const sql = `
+  SELECT CAST(tbl_mensagem.id AS FLOAT) AS 
+  nome,
+  tbl_mensagem.email,
+  tbl_mensagem.telefone,
+  tbl_mensagem.celular,
+  tbl_mensagem.mensagem,
+  tbl_tipo_mensagem.id AS id_tipo_mensagem,
+  tbl_tipo_mensagem.tipo AS tipo_mensagem
+    FROM tbl_mensagem
+      INNER JOIN tbl_tipo_mensagem
+        ON tbl_tipo_mensagem.id = tbl_mensagem.id_tipo_mensagem
+      WHERE tbl_mensagem.id = ${id};`;
 
   const rsMensagem = await prisma.$queryRawUnsafe(sql);
 
