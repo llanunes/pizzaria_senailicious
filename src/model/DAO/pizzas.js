@@ -50,7 +50,6 @@ const insertPizza = async (pizza) => {
     }
     return false;
   } catch (error) {
-    console.log(error);
     return false;
   }
 };
@@ -68,8 +67,6 @@ const updatePizza = async (pizza) => {
           WHERE id = ${pizza.id};`;
 
     const result = await prisma.$executeRawUnsafe(sql);
-
-    console.log(result);
 
     if (result) {
       return true;

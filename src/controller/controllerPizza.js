@@ -67,7 +67,6 @@ const deletarPizza = async (id) => {
   const pizza = await buscarPizza(id);
   if (pizza) {
     const result = await pizzaDao.deletePizza(id);
-    console.log(result);
 
     if (result) {
       return { status: 201, message: MESSAGE_SUCESS.DELETE_ITEM };

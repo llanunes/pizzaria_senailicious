@@ -122,7 +122,6 @@ app.put('/v1/pizza/:id', cors(), async (request, response) => {
         dadosBody.id = id;
 
         const novaPizza = await controllerPizza.atualizarPizza(dadosBody);
-        console.log(novaPizza);
 
         statusCode = novaPizza.status;
         message = novaPizza.message;
