@@ -546,13 +546,15 @@ app.post('/v1/login/admin', cors(), async (request, response) => {
 
   if (headerContentType === 'application/json') {
     const adminInfos = request.body;
-    if (await verificarLoginAdmin(adminInfos)) {
+    const foundAdmin = await verificarLoginAdmin(adminInfos);
+    if (foundAdmin) {
       const createJwtResponse = createJwt(adminInfos);
 
       statusCode = createJwtResponse.status;
       message = createJwtResponse.response;
+      message.admin = foundAdmin;
 
-      response.status(statusCode).json({ data: message });
+      response.status(statusCode).json(message);
     } else {
       response.status(404).json({ message: MESSAGE_ERROR.NOT_FOUND_BD });
     }

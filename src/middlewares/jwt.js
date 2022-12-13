@@ -14,7 +14,7 @@ export const createJwt = (admin) => {
   return { status: 200, response: { message: MESSAGE_SUCESS.JWT_CREATED, token } };
 };
 
-export const validateJwt = (token) => jwt.verify(token, process.env.SECRET, async (err, decode) => {
+export const validateJwt = (token) => jwt.verify(token, process.env.SECRET, async (err) => {
   let status = false;
   if (!err) {
     status = true;
