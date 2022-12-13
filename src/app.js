@@ -69,11 +69,11 @@ app.get('/v1/pizza/:id', cors(), async (request, response) => {
       statusCode = 200;
       message = { pizzas: dadosPizza };
     } else {
-      statusCode = 400;
+      statusCode = 404;
       message = MESSAGE_ERROR.NOT_FOUND_BD;
     }
   } else {
-    statusCode = 404;
+    statusCode = 400;
     message = MESSAGE_ERROR.REQUIRED_ID;
   }
 

@@ -14,7 +14,7 @@ export const MESSAGE_ERROR = {
   NOT_FOUND_BD: 'Não foram encontrados registros no Banco de Dados.',
   NOT_INSERT_ITEM: 'O item não pôde ser criado',
   INTERNAL_ERROR_DB: 'Não foi possível realizar a operação com o Banco de Dados.',
-  REQUIRED_ID: 'Ó id do registro é obrigatório neste tipo de requisição',
+  REQUIRED_ID: 'O id do registro é obrigatório neste tipo de requisição',
 };
 
 export const MESSAGE_SUCESS = {
