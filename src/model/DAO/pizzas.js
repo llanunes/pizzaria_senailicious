@@ -43,7 +43,7 @@ const insertPizza = async (pizza) => {
              ${pizza.quantidade_vezes_favorito},
              '${pizza.id_tipo_pizza}'
              )`;
-             const result = await prisma.$executeRawUnsafe(sql);
+    const result = await prisma.$executeRawUnsafe(sql);
 
     if (result) {
       return true;
@@ -66,9 +66,10 @@ const updatePizza = async (pizza) => {
              desconto = ${pizza.desconto}
           
           WHERE id = ${pizza.id};`;
-          console.log(sql);
 
     const result = await prisma.$executeRawUnsafe(sql);
+
+    console.log(result);
 
     if (result) {
       return true;
