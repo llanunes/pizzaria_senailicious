@@ -28,7 +28,7 @@ import controllerIngredientes from './controller/controllerIngredientes.js';
 import controllerAdministrador from './controller/controllerAdministrador.js';
 import controllerCategoria from './controller/controllerCategoria.js';
 import controllerMensagem from './controller/controllerMensagem.js';
-import { createJwt } from './middlewares/jwt.js';
+import { createJwt, validateJwt } from './middlewares/jwt.js';
 import verificarLoginAdmin from './middlewares/verificarLoginAdmin.js';
 import controllerPizza from './controller/controllerPizza.js';
 import controllerBebida from './controller/controllerBebida.js';
@@ -36,6 +36,15 @@ import controllerBebida from './controller/controllerBebida.js';
 const app = express();
 
 app.use(express.json(), cors());
+
+// eslint-disable-next-line consistent-return
+const verifyJWT = async (request, response, next) => {
+  const token = request.headers['x-access-token'];
+
+  const authenticateToken = await validateJwt(token);
+
+  if (authenticateToken) { next(); } else { return response.status(401).end(); }
+};
 
 // ########################## ENDPOINTS PARA PIZZAS ##########################
 
@@ -405,7 +414,7 @@ app.delete('/v1/ingrediente/:id', cors(), async (request, response) => {
 
 // ########################## ENDPOINTS PARA ADMINISTRADORES ##########################
 
-app.get('/v1/administradores', cors(), async (request, response) => {
+app.get('/v1/administradores', verifyJWT, cors(), async (request, response) => {
   let message;
   let statusCode;
 
@@ -550,7 +559,7 @@ app.post('/v1/login/admin', cors(), async (request, response) => {
 
 // ########################## ENDPOINTS PARA MENSAGENS ##########################
 
-app.get('/v1/mensagens', cors(), async (request, response) => {
+app.get('/v1/mensagens', verifyJWT, cors(), async (request, response) => {
   let message;
   let statusCode;
 
