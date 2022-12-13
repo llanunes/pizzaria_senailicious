@@ -127,6 +127,8 @@ const selectByIdMensagem = async (id) => {
         ON tbl_tipo_mensagem.id = tbl_mensagem.id_tipo_mensagem
       WHERE tbl_mensagem.id = ${id};`;
 
+  console.log(sql);
+
   const rsMensagem = await prisma.$queryRawUnsafe(sql);
 
   if (rsMensagem.length > 0) {
