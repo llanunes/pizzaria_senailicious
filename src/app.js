@@ -42,7 +42,7 @@ app.use(express.json(), cors());
 
 // eslint-disable-next-line consistent-return
 const verifyJWT = async (request, response, next) => {
-  const token = request.headers['x-access-token'];
+  const token = request.headers.authorization.split(' ')[1];
 
   const authenticateToken = await validateJwt(token);
 
@@ -439,10 +439,8 @@ app.get('/v1/administradores', verifyJWT, cors(), async (request, response) => {
   let message;
   let statusCode;
 
-  // Retorna todos os administradores existentes do BD
   const dadosAdministrador = await controllerAdministrador.listarAdministradores();
 
-  // valida se existe retorno
   if (dadosAdministrador) {
     statusCode = 200;
     message = { admins: dadosAdministrador };
@@ -499,8 +497,7 @@ app.post('/v1/administrador', cors(), async (request, response) => {
     message = MESSAGE_ERROR.CONTENT_TYPE;
   }
 
-  response.status(statusCode);
-  response.json(message);
+  response.status(statusCode).json(message);
 });
 
 app.put('/v1/administrador/:id', cors(), async (request, response) => {
@@ -534,8 +531,7 @@ app.put('/v1/administrador/:id', cors(), async (request, response) => {
     message = MESSAGE_ERROR.CONTENT_TYPE;
   }
 
-  response.status(statusCode);
-  response.json(message);
+  response.status(statusCode).json(message);
 });
 
 app.delete('/v1/administrador/:id', cors(), async (request, response) => {
@@ -552,8 +548,7 @@ app.delete('/v1/administrador/:id', cors(), async (request, response) => {
     statusCode = 400;
     message = MESSAGE_ERROR.REQUIRED_ID;
   }
-  response.status(statusCode);
-  response.json(message);
+  response.status(statusCode).json(message);
 });
 
 // ########################## ENDPOINT PARA AUTENTICAÇÃO ##########################
