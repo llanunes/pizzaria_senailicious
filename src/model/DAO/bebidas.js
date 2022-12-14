@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { prisma } from '../utils/prisma-instance.js';
 
 const insertBebida = async (bebida) => {
@@ -28,7 +29,7 @@ const insertBebida = async (bebida) => {
     return false;
   }
 };
- 
+
 const updateBebida = async (bebida) => {
   try {
     const sql = `UPDATE tbl_bebida SET
@@ -39,9 +40,9 @@ const updateBebida = async (bebida) => {
              desconto = ${bebida.desconto}
           
           WHERE id = ${bebida.id};`;
- 
+
     const result = await prisma.$executeRawUnsafe(sql);
- 
+
     if (result) {
       return true;
     }
@@ -50,7 +51,7 @@ const updateBebida = async (bebida) => {
     return false;
   }
 };
- 
+
 const deleteBebida = async (id) => {
   try {
     const sql = `delete from tbl_bebida 
@@ -117,5 +118,5 @@ export default {
   deleteBebida,
   selectAllBebidas,
   insertBebida,
-  selectByIdBebida
+  selectByIdBebida,
 };

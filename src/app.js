@@ -24,16 +24,17 @@
 import express from 'express';
 import cors from 'cors';
 import { MESSAGE_ERROR } from './module/config.js';
+import { createJwt, validateJwt } from './middlewares/jwt.js';
 import controllerIngredientes from './controller/controllerIngredientes.js';
 import controllerAdministrador from './controller/controllerAdministrador.js';
 import controllerCategoria from './controller/controllerCategoria.js';
 import controllerIngredientesBebida from './controller/controllerIngredienteBebida.js';
 import controllerMensagem from './controller/controllerMensagem.js';
-import { createJwt, validateJwt } from './middlewares/jwt.js';
 import verificarLoginAdmin from './middlewares/verificarLoginAdmin.js';
 import controllerPizza from './controller/controllerPizza.js';
 import controllerBebida from './controller/controllerBebida.js';
 import controllerIngredientesPizza from './controller/controllerIngredientePizza.js';
+import controllerProdutos from './controller/controllerProdutos.js';
 
 const app = express();
 
@@ -187,8 +188,7 @@ app.get('/v1/bebidas', cors(), async (request, response) => {
     message = MESSAGE_ERROR.NOT_FOUND_BD;
   }
 
-  response.status(statusCode);
-  response.json(message);
+  response.status(statusCode).json(message);
 });
 
 app.get('/v1/bebida/:id', cors(), async (request, response) => {
@@ -291,6 +291,25 @@ app.delete('/v1/bebida/:id', cors(), async (request, response) => {
   }
   response.status(statusCode);
   response.json(message);
+});
+
+// ########################## ENDPOINTS PARA PRODUTOS ##########################
+
+app.get('/v1/produtos', cors(), async (request, response) => {
+  let message;
+  let statusCode;
+
+  const dadosProdutos = await controllerProdutos.listarProdutos();
+
+  if (dadosProdutos) {
+    message = dadosProdutos.message;
+    statusCode = dadosProdutos.status;
+  } else {
+    message = MESSAGE_ERROR.INTERNAL_ERROR_DB;
+    statusCode = 500;
+  }
+
+  response.status(statusCode).json(message);
 });
 
 // ########################## ENDPOINTS PARA INGREDIENTES ##########################
