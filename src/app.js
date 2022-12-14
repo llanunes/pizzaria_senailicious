@@ -93,7 +93,7 @@ app.get('/v1/pizza/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.post('/v1/pizza', cors(), async (request, response) => {
+app.post('/v1/pizza', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -119,7 +119,7 @@ app.post('/v1/pizza', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.put('/v1/pizza/:id', cors(), async (request, response) => {
+app.put('/v1/pizza/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -150,11 +150,10 @@ app.put('/v1/pizza/:id', cors(), async (request, response) => {
     message = MESSAGE_ERROR.CONTENT_TYPE;
   }
 
-  response.status(statusCode);
-  response.json(message);
+  response.status(statusCode).json(message);
 });
 
-app.delete('/v1/pizza/:id', cors(), async (request, response) => {
+app.delete('/v1/pizza/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const { id } = request.params;
@@ -215,7 +214,7 @@ app.get('/v1/bebida/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.post('/v1/bebida', cors(), async (request, response) => {
+app.post('/v1/bebida', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -240,7 +239,7 @@ app.post('/v1/bebida', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.put('/v1/bebida/:id', cors(), async (request, response) => {
+app.put('/v1/bebida/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -275,7 +274,7 @@ app.put('/v1/bebida/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.delete('/v1/bebida/:id', cors(), async (request, response) => {
+app.delete('/v1/bebida/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const { id } = request.params;
@@ -355,7 +354,7 @@ app.get('/v1/ingrediente/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.post('/v1/ingrediente', cors(), async (request, response) => {
+app.post('/v1/ingrediente', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -381,7 +380,7 @@ app.post('/v1/ingrediente', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.put('/v1/ingrediente/:id', cors(), async (request, response) => {
+app.put('/v1/ingrediente/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -416,7 +415,7 @@ app.put('/v1/ingrediente/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.delete('/v1/ingrediente/:id', cors(), async (request, response) => {
+app.delete('/v1/ingrediente/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const { id } = request.params;
@@ -451,7 +450,7 @@ app.get('/v1/administradores', verifyJWT, cors(), async (request, response) => {
   response.status(statusCode).json(message);
 });
 
-app.get('/v1/administrador/:id', cors(), async (request, response) => {
+app.get('/v1/administrador/:id', verifyJWT, cors(), async (request, response) => {
   let message;
   let statusCode;
   const { id } = request.params;
@@ -475,7 +474,7 @@ app.get('/v1/administrador/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.post('/v1/administrador', cors(), async (request, response) => {
+app.post('/v1/administrador', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -500,7 +499,7 @@ app.post('/v1/administrador', cors(), async (request, response) => {
   response.status(statusCode).json(message);
 });
 
-app.put('/v1/administrador/:id', cors(), async (request, response) => {
+app.put('/v1/administrador/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -534,7 +533,7 @@ app.put('/v1/administrador/:id', cors(), async (request, response) => {
   response.status(statusCode).json(message);
 });
 
-app.delete('/v1/administrador/:id', cors(), async (request, response) => {
+app.delete('/v1/administrador/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const { id } = request.params;
@@ -595,7 +594,7 @@ app.get('/v1/mensagens', verifyJWT, cors(), async (request, response) => {
   response.json(message);
 });
 
-app.get('/v1/mensagem/:id', cors(), async (request, response) => {
+app.get('/v1/mensagem/:id', verifyJWT, cors(), async (request, response) => {
   let message;
   let statusCode;
   const { id } = request.params;
@@ -679,7 +678,7 @@ app.put('/v1/mensagem/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.delete('/v1/mensagem/:id', cors(), async (request, response) => {
+app.delete('/v1/mensagem/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const { id } = request.params;
@@ -741,7 +740,7 @@ app.get('/v1/tipopizzas', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.delete('/v1/tipopizza/:id', cors(), async (request, response) => {
+app.delete('/v1/tipopizza/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const { id } = request.params;
@@ -759,7 +758,7 @@ app.delete('/v1/tipopizza/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.post('/v1/tipopizza', cors(), async (request, response) => {
+app.post('/v1/tipopizza', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -784,7 +783,7 @@ app.post('/v1/tipopizza', cors(), async (request, response) => {
   response.status(statusCode).json(message);
 });
 
-app.put('/v1/tipopizza/:id', cors(), async (request, response) => {
+app.put('/v1/tipopizza/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -863,7 +862,7 @@ app.get('/v1/tipobebidas', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.delete('/v1/tipobebida/:id', cors(), async (request, response) => {
+app.delete('/v1/tipobebida/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const { id } = request.params;
@@ -881,7 +880,7 @@ app.delete('/v1/tipobebida/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.post('/v1/tipobebida', cors(), async (request, response) => {
+app.post('/v1/tipobebida', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -906,7 +905,7 @@ app.post('/v1/tipobebida', cors(), async (request, response) => {
   response.status(statusCode).json(message);
 });
 
-app.put('/v1/tipobebida/:id', cors(), async (request, response) => {
+app.put('/v1/tipobebida/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -984,7 +983,7 @@ app.get('/v1/ingrediente/pizza/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.post('/v1/ingrediente/pizza/:id', cors(), async (request, response) => {
+app.post('/v1/ingrediente/pizza/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -1011,7 +1010,7 @@ app.post('/v1/ingrediente/pizza/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.put('/v1/ingrediente/pizza/:id', cors(), async (request, response) => {
+app.put('/v1/ingrediente/pizza/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -1047,7 +1046,7 @@ app.put('/v1/ingrediente/pizza/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.delete('/v1/ingrediente/pizza/:id', cors(), async (request, response) => {
+app.delete('/v1/ingrediente/pizza/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const { id } = request.params;
@@ -1107,7 +1106,7 @@ app.get('/v1/ingrediente/bebida/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.post('/v1/ingrediente/bebida', cors(), async (request, response) => {
+app.post('/v1/ingrediente/bebida', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -1134,7 +1133,7 @@ app.post('/v1/ingrediente/bebida', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.put('/v1/ingrediente/bebida/:id', cors(), async (request, response) => {
+app.put('/v1/ingrediente/bebida/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const headerContentType = request.headers['content-type'];
@@ -1170,7 +1169,7 @@ app.put('/v1/ingrediente/bebida/:id', cors(), async (request, response) => {
   response.json(message);
 });
 
-app.delete('/v1/ingrediente/bebida/:id', cors(), async (request, response) => {
+app.delete('/v1/ingrediente/bebida/:id', verifyJWT, cors(), async (request, response) => {
   let statusCode;
   let message;
   const { id } = request.params;
