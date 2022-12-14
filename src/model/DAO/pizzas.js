@@ -124,6 +124,7 @@ const selectByIdPizza = async (id) => {
      tbl_pizza.tamanho,
      tbl_pizza.preco,
      tbl_pizza.desconto,
+     tbl_pizza.quantidade_vezes_favorito,
      tbl_tipo_pizza.id AS id_tipo_pizza,
      tbl_tipo_pizza.tipo AS tipo_pizza
      FROM tbl_pizza

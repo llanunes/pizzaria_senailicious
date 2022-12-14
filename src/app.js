@@ -590,7 +590,7 @@ app.get('/v1/mensagens', verifyJWT, cors(), async (request, response) => {
 
   if (dadosMensagens) {
     statusCode = 200;
-    message = dadosMensagens;
+    message = { mensagens: dadosMensagens };
   } else {
     statusCode = 404;
     message = MESSAGE_ERROR.NOT_FOUND_BD;

@@ -33,7 +33,7 @@ const buscarMensagem = async (id) => {
 };
 
 const novaMensagem = async (mensagem) => {
-  if (mensagem.nome === '' || mensagem.email === '' || mensagem.telefone === '' || mensagem.celular === '' || mensagem.mensagem === '' || mensagem.id_tipo_mensagem === '') {
+  if (mensagem.nome === '' || mensagem.email === '' || mensagem.celular === '' || mensagem.mensagem === '' || mensagem.id_tipo_mensagem === '') {
     return { status: 404, message: MESSAGE_ERROR.REQUIRED_FIELDS };
   }
   const result = await mensagemDao.insertMensagem(mensagem);
@@ -79,6 +79,20 @@ const listarMensagens = async () => {
   const result = await mensagemDao.selectAllMensagens();
 
   if (result) {
+    result.map((item) => {
+      const tipoMensagem = {
+        id_tipo_mensagem: item.id_tipo_mensagem,
+        tipo_mensagem: item.tipo_mensagem,
+      };
+
+      delete item.id_tipo_mensagem;
+      delete item.tipo_mensagem;
+
+      item.tipo = tipoMensagem;
+
+      return item;
+    });
+
     return result;
   }
   return false;
